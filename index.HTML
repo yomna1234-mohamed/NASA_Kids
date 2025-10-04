@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Kids - Where Children Can Explore the Solar System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Color Variables */
+        :root {
+            --navy: #0a1931;
+            --navy-light: #1a2b4a;
+            --navy-lighter: #2a3b5a;
+            --blue: #185adb;
+            --light-blue: #4fc3f7;
+            --accent: #ffab00;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --gray: #e9ecef;
+            --light-gray: #f5f7fa;
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Loading Page */
+        #loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        #loading-page h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #loading-page p {
+            color: var(--white);
+            font-size: 1.5rem;
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Header */
+    .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #0a192f;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .navbar .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #4dabf7;
+    }
+
+    .contact-btn {
+      border: 2px solid #4dabf7;
+      border-radius: 50px;
+      padding: 6px 18px;
+      color: #4dabf7;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #4dabf7;
+      color: white;
+    }
+
+        /* Main Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--navy);
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* First Section - Solar System Sandbox */
+        #solar-system {
+            background: linear-gradient(to bottom, var(--navy-light), var(--navy-lighter));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+        }
+
+        .solar-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .solar-display {
+            flex: 1;
+            min-width: 300px;
+            height: 500px;
+            background-color: var(--navy-lighter);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .solar-display:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .solar-display iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .solar-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .solar-info h2 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .solar-info p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* Second Section - About NASA */
+        #about {
+            background-color: var(--white);
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Third Section - Sandbox */
+        #sandbox {
+            background: linear-gradient(to bottom, var(--navy-light), var(--navy-lighter));
+            color: var(--white);
+        }
+
+        .sandbox-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .sandbox-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .sandbox-explanation {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--navy-lighter);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .sandbox-explanation:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .explanation-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .explanation-header i {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-left: 10px;
+        }
+
+        .explanation-content {
+            background-color: var(--navy);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .explanation-content:hover {
+            transform: scale(1.02);
+        }
+
+        /* Fourth Section - Vision & Mission */
+        #vision-mission {
+            background-color: var(--white);
+        }
+
+        .vm-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .vision, .mission {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--gray);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .vision:hover, .mission:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .vision h3, .mission h3 {
+            color: var(--navy);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .vision h3 i, .mission h3 i {
+            margin-left: 10px;
+            color: var(--accent);
+        }
+
+        /* Fifth Section - Games */
+        #games {
+            background: linear-gradient(to bottom, var(--navy-light), var(--navy-lighter));
+            color: var(--white);
+        }
+
+        .game-container {
+            background-color: var(--navy-lighter);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .game-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-intro {
+            margin-bottom: 30px;
+        }
+
+        .game-screen {
+            background-color: var(--navy);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .game-screen:hover {
+            transform: scale(1.02);
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background-color: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: var(--light-blue);
+            color: var(--navy);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn i {
+            margin-left: 8px;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--navy);
+        }
+
+        .btn-accent:hover {
+            background-color: #ffb74d;
+        }
+
+        /* Sixth Section - FAQ */
+        #faq {
+            background-color: var(--light-gray);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-question {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .faq-question:hover {
+            background-color: var(--navy-light);
+        }
+
+        .faq-answer {
+            background-color: var(--white);
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 20px;
+        }
+
+        /* Seventh Section - Contact Us */
+        #contact {
+            background-color: var(--white);
+            padding: 60px 0;
+        }
+
+        .contact-container {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--light-gray);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--blue);
+            margin-bottom: 20px;
+        }
+
+        .contact-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: var(--blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-button:hover {
+            background-color: var(--light-blue);
+            color: var(--navy);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Eighth Section - Space Fun Facts */
+        #space-facts {
+            background-color: var(--white);
+        }
+
+        .facts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .fact-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            background-color: var(--light-gray);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .fact-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .fact-card h3 {
+            color: var(--navy);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--navy);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Memory Game Styles */
+        .memory-game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: var(--blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            color: white;
+            user-select: none;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .card.flipped {
+            background-color: var(--accent);
+            color: var(--navy);
+            transform: rotateY(180deg) scale(1.05);
+        }
+
+        .card.matched {
+            background-color: var(--light-blue);
+            cursor: default;
+            transform: scale(1.05);
+        }
+
+        .turns {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* New Styles for Improvements */
+        .sandbox-explanation .btn {
+            margin-top: 20px;
+        }
+
+        .game-start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .game-start-screen.hidden {
+            display: none;
+        }
+
+        .game-board.hidden {
+            display: none;
+        }
+
+        .game-start-screen i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        /* Solar System Page Styles */
+        .solar-system-page {
+            background: linear-gradient(to bottom, var(--navy-light), var(--navy-lighter));
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .solar-system-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .solar-system-title {
+            color: var(--white);
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .solar-system-title i {
+            margin-right: 15px;
+            color: var(--accent);
+        }
+
+        .solar-system-container {
+            height: calc(100vh - 150px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .solar-system-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .solar-system-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(4, 80px);
+                gap: 10px;
+            }
+
+            .card {
+                width: 80px;
+                height: 80px;
+                font-size: 1.5rem;
+            }
+
+            .solar-system-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-board {
+                grid-template-columns: repeat(4, 70px);
+                gap: 8px;
+            }
+
+            .card {
+                width: 70px;
+                height: 70px;
+                font-size: 1.3rem;
+            }
+
+            .solar-system-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Page -->
+    <div id="loading-page">
+        <h1>NASA Kids</h1>
+        <p>where children can explore the Solar System, play space games, and solve challenges</p>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/1200px-NASA_logo.svg.png" alt="NASA Logo">
+            NASA Kids
+            </div>
+    
+            <div class="nav-links">
+            <a href="index.html" style="color: #4dabf7;">Home</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="earth-map.html" >Earth Map</a>
+            <a href="games.html" >Games</a>
+            <a href="sandbox.html">SandBox</a>
+            <a href="contact-us.html" class="contact-btn">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- First Section - Solar System Sandbox -->
+    <section id="solar-system">
+        <div class="container">
+            <div class="solar-container">
+                <div class="solar-display">
+                    <!-- Solar system simulation embedded here -->
+                    <iframe src="solar-system-main/index.html" 
+                            title="Interactive Solar System" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="solar-info">
+                    <h2>Explore the Solar System</h2>
+                    <p>Welcome to our interactive solar system! Here you can explore all the planets in our solar system and learn fascinating facts about each one.</p>
+                    <p>Click on any planet to learn more about its characteristics, distance from the sun, moons, and many exciting facts.</p>
+                    <p>Discover the wonders of our cosmic neighborhood through this interactive experience.</p>
+                    <button class="btn" id="start-journey-btn">
+                        <i class="fas fa-play"></i> Start Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Second Section - About NASA -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About NASA</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>NASA: Space Exploration and Education</h3>
+                    <p>The National Aeronautics and Space Administration (NASA) is an independent agency of the U.S. federal government responsible for the civil space program, as well as aeronautics and space research.</p>
+                    <p>Founded in 1958, NASA has inspired the world with its achievements in space exploration, including landing astronauts on the moon, launching the Hubble Space Telescope, and exploring Mars with rovers.</p>
+                    <p>NASA's program for children aims to inspire the next generation of explorers, scientists, and engineers by providing fun and interactive educational content about space and science.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Space image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Third Section - Sandbox -->
+    <section id="sandbox">
+        <div class="container">
+            <h2 class="section-title">Sandbox</h2>
+            <div class="sandbox-content">
+                <div class="sandbox-text">
+                    <h3>A Place for Creativity and Experimentation</h3>
+                    <p>In our sandbox, you can create your own models, experiment with your ideas, and solve exciting space challenges.</p>
+                    <p>Use our interactive tools to build spacecraft, design orbital paths, and simulate space conditions.</p>
+                    <p>You can also participate in the challenges we regularly offer and compete with other children from around the world.</p>
+                    <p>Don't hesitate to try any idea that comes to your mind - this is a safe place to learn through trial and error!</p>
+                </div>
+                <div class="sandbox-explanation">
+                    <div class="explanation-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>How to Use the Sandbox</h3>
+                    </div>
+                    <div class="explanation-content">
+                        <p>The sandbox is your creative space to experiment with space concepts. You can:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Build and customize your own spacecraft</li>
+                            <li>Design orbital trajectories around planets</li>
+                            <li>Simulate gravity and other space phenomena</li>
+                            <li>Test your designs in various space environments</li>
+                        </ul>
+                        <p style="margin-top: 15px;">All your creations are saved automatically, so you can continue your experiments anytime!</p>
+                        <a href="sandbox.html" class="btn" style="margin-top: 20px;"><i class="fas fa-rocket"></i> Explore Sandbox</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fourth Section - Vision & Mission -->
+    <section id="vision-mission">
+        <div class="container">
+            <h2 class="section-title">Our Vision & Mission</h2>
+            <div class="vm-container">
+                <div class="vision">
+                    <h3><i class="fas fa-eye"></i> Our Vision</h3>
+                    <p>We envision a world where every child is able to explore the wonders of the universe, understand the fundamentals of science and engineering, and develop a lifelong passion for learning and discovery.</p>
+                    <p>We want to create a new generation of thinkers and innovators who will lead humanity to new frontiers in space exploration and understanding our universe.</p>
+                </div>
+                <div class="mission">
+                    <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                    <p>Our mission is to inspire and educate children about space science by providing interactive and engaging content suitable for all ages.</p>
+                    <p>We aim to make learning science fun through games, challenges, and interactive simulations that encourage curiosity and critical thinking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fifth Section - Games -->
+    <section id="games">
+        <div class="container">
+            <h2 class="section-title">Space Memory Challenge</h2>
+            <div class="game-container">
+                <div class="game-intro">
+                    <h3>Space Memory Game</h3>
+                    <p>Test your memory with this space-themed matching game! Find all the matching pairs of space objects. The symbols change every time you play!</p>
+                </div>
+                <div class="game-screen">
+                    <div class="memory-game-container">
+                        <div class="game-start-screen" id="gameStartScreen">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>Ready to Play?</h3>
+                            <p>Click the "Start Game" button below to begin the Space Memory Challenge!</p>
+                        </div>
+                        <div class="game-board hidden" id="gameBoard"></div>
+                        <p class="turns hidden" id="turnsCounter">Turns: <span id="turns">0</span></p>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-accent" id="start-game"><i class="fas fa-play"></i> Start Game</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sixth Section - FAQ -->
+    <section id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is the appropriate age for using NASA Kids?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>NASA Kids is designed for children aged 6 to 14. However, younger and older children can also enjoy the content with parental assistance or on their own.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is the content completely free?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, all content on NASA Kids is completely free. We believe that quality education should be available to everyone without financial barriers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How can I participate in challenges?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can participate in challenges by going to the "Challenges" section and choosing the challenge you want to participate in. Then follow the instructions to complete the task and submit your solution.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I suggest new challenges?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! We encourage users to suggest ideas for new challenges. You can use the "Suggest a Challenge" section to submit your ideas, and we will review them and add them to the site if appropriate.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What safety measures are in place for children?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>NASA Kids is a completely safe environment for children. We do not collect personal information from children, and all interactions are moderated to ensure a safe and educational experience.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Are there any offline activities available?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! We offer printable activities, coloring pages, and DIY projects that children can enjoy offline. Check our "Additional Resources" section for these materials.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How often is new content added?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We add new content monthly, including new challenges, games, and educational materials. We also update our simulations with the latest NASA discoveries.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I use NASA Kids in my classroom?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! NASA Kids is a great resource for educators. We have special lesson plans and classroom activities available for teachers in our "Educator Resources" section.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How can I contact the NASA Kids team?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can use the contact form in the "Contact Us" section or send an email to kids@nasa.gov. We love to hear your feedback and suggestions!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seventh Section - Contact Us -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-container">
+                <i class="fas fa-external-link-alt contact-icon"></i>
+                <h3 style="color: var(--navy); margin-bottom: 15px;">Contact Page</h3>
+                <p>We have a dedicated contact page with a more formal contact form.</p>
+                <a href="contact.html" class="contact-button"><i class="fas fa-external-link-alt"></i> Go to Contact Page</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Eighth Section - Space Fun Facts -->
+    <section id="space-facts">
+        <div class="container">
+            <h2 class="section-title">Space Fun Facts</h2>
+            <div class="facts-container">
+                <div class="fact-card">
+                    <i class="fas fa-sun fact-icon"></i>
+                    <h3>Sun Facts</h3>
+                    <p>The Sun is so large that about 1.3 million Earths could fit inside it. It's also about 4.6 billion years old!</p>
+                </div>
+                <div class="fact-card">
+                    <i class="fas fa-moon fact-icon"></i>
+                    <h3>Moon Facts</h3>
+                    <p>The Moon is slowly moving away from Earth at a rate of about 3.8 centimeters per year.</p>
+                </div>
+                <div class="fact-card">
+                    <i class="fas fa-user-astronaut fact-icon"></i>
+                    <h3>Astronaut Facts</h3>
+                    <p>Astronauts can grow up to 2 inches taller in space because there's no gravity compressing their spines.</p>
+                </div>
+                <div class="fact-card">
+                    <i class="fas fa-meteor fact-icon"></i>
+                    <h3>Meteor Facts</h3>
+                    <p>About 48.5 tons of meteoritic material falls on Earth each day. Most of it burns up in the atmosphere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NASA Kids</h3>
+                    <p>An interactive platform to teach children about space and science through fun games and challenges.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="sandbox.html">SandBox</a></li>
+                        <li><a href="earth-map.html">Earth Map</a></li>
+                        <li><a href="challenges.html">Challenges</a></li>
+                        <li><a href="suggest-challenge.html">Suggest Challenge</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Additional Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">NASA Image Library</a></li>
+                        <li><a href="#">Educational Videos</a></li>
+                        <li><a href="#">Printable Activities</a></li>
+                        <li><a href="#">Monthly Contests</a></li>
+                        <li><a href="#">NASA Kids Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NASA Kids. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Solar System Page (Hidden by default) -->
+    <div id="solar-system-page" class="solar-system-page" style="display: none;">
+        <div class="container">
+            <div class="solar-system-header">
+                <h1 class="solar-system-title">
+                    <i class="fas fa-globe-americas"></i>
+                    Interactive Solar System
+                </h1>
+                <button class="btn" id="back-to-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+            <div class="solar-system-container">
+                <iframe src="solar-system-main/" 
+                        title="Interactive Solar System" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        // Hide loading page after page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-page').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loading-page').style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        // Activate FAQ
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentNode;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Memory Game Logic
+        const spaceSymbols = [
+            "🌙", "🚀", "⭐", "🪐", "👩‍🚀", "🛰️", "☄️", "🔭",
+            "🌍", "👽", "🛸", "💫", "🌠", "🪙", "🔴", "🟠"
+        ];
+        
+        let cards = [];
+        let firstCard, secondCard;
+        let lockBoard = false;
+        let turns = 0;
+        let matchedPairs = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function startGame() {
+            const gameBoard = document.getElementById("gameBoard");
+            const gameStartScreen = document.getElementById("gameStartScreen");
+            const turnsCounter = document.getElementById("turnsCounter");
+            
+            gameStartScreen.classList.add("hidden");
+            gameBoard.classList.remove("hidden");
+            turnsCounter.classList.remove("hidden");
+            
+            gameBoard.innerHTML = "";
+            turns = 0;
+            matchedPairs = 0;
+            document.getElementById("turns").textContent = turns;
+
+            // Select 8 random symbols for this game (16 cards total)
+            const selectedSymbols = shuffle([...spaceSymbols]).slice(0, 8);
+            
+            // Create pairs of the selected symbols
+            cards = shuffle([...selectedSymbols, ...selectedSymbols]);
+            
+            cards.forEach((symbol) => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.dataset.symbol = symbol;
+                card.addEventListener("click", flipCard);
+                gameBoard.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard || this === firstCard || this.classList.contains("matched")) return;
+            
+            this.textContent = this.dataset.symbol;
+            this.classList.add("flipped");
+
+            if (!firstCard) {
+                firstCard = this;
+                return;
+            }
+
+            secondCard = this;
+            lockBoard = true;
+            turns++;
+            document.getElementById("turns").textContent = turns;
+
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+                disableCards();
+                matchedPairs++;
+                
+                // Check if all pairs are matched
+                if (matchedPairs === 8) {
+                    setTimeout(() => {
+                        alert(`Congratulations! You won in ${turns} turns!`);
+                    }, 500);
+                }
+            } else {
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            firstCard.classList.add("matched");
+            secondCard.classList.add("matched");
+            firstCard.removeEventListener("click", flipCard);
+            secondCard.removeEventListener("click", flipCard);
+            
+            resetBoard();
+        }
+
+        function unflipCards() {
+            setTimeout(() => {
+                firstCard.textContent = "";
+                secondCard.textContent = "";
+                firstCard.classList.remove("flipped");
+                secondCard.classList.remove("flipped");
+                
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [firstCard, secondCard] = [null, null];
+            lockBoard = false;
+        }
+
+        // Start game when button is clicked
+        document.getElementById('start-game').addEventListener('click', startGame);
+
+        // Solar System Page Navigation
+        document.getElementById('start-journey-btn').addEventListener('click', function() {
+            // Hide all sections and show solar system page
+            document.querySelectorAll('section, footer, header').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById('solar-system-page').style.display = 'block';
+        });
+
+        document.getElementById('back-to-home').addEventListener('click', function() {
+            // Show all sections and hide solar system page
+            document.querySelectorAll('section, footer, header').forEach(el => {
+                el.style.display = 'block';
+            });
+            document.getElementById('solar-system-page').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

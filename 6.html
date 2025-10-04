@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🚀 Space Invaders - Web Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #071733 0%, #0f2a4a 40%, #f3f6f9 100%);
+      min-height: 100vh;
+      font-family: sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .header-glow {
+      text-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+    }
+    .expand-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(30, 41, 59, 0.8);
+      color: white;
+      border: 1px solid #475569;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .expand-btn:hover {
+      background: rgba(14, 165, 233, 0.8);
+      transform: scale(1.05);
+    }
+    /* True fullscreen */
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      border-radius: 0;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fullscreen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+    .fullscreen-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+    }
+    .close-btn {
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .close-btn:hover {
+      background: rgba(220, 38, 38, 0.9);
+      transform: scale(1.05);
+    }
+    .iframe-container {
+      position: relative;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="max-w-4xl mx-auto p-6">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
+          <span class="text-white font-bold text-xl">👾</span>
+        </div>
+        <h1 class="text-4xl font-extrabold text-white header-glow">
+          Space <span class="text-cyan-400">Invaders</span>
+        </h1>
+      </div>
+      <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+        Play the classic Space Invaders game right in your browser!
+      </p>
+    </div>
+
+```
+<!-- Game Container -->
+<div class="glass">
+  <h2 class="text-2xl font-bold text-white mb-4">🎮 Game Preview</h2>
+  <div class="iframe-container" id="iframeWrapper">
+    <button class="expand-btn" onclick="toggleFullscreen('iframeWrapper')">⛶ Fullscreen</button>
+    <iframe 
+      src="https://elgoog.im/space-invaders/"
+      class="w-full h-[600px] border-2 border-slate-600 shadow-inner rounded-lg"
+      loading="lazy"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Fullscreen Controls -->
+
+  <div class="fullscreen-controls" style="display:none;">
+    <button class="close-btn" onclick="exitFullscreen()">✕ Close</button>
+  </div>
+
+  <script>
+    let isFullscreen = false;
+    let originalContainer = null;
+
+    function toggleFullscreen(wrapperId) {
+      const wrapper = document.getElementById(wrapperId);
+      const iframe = wrapper.querySelector('iframe');
+
+      if (!isFullscreen) {
+        originalContainer = wrapper.parentElement;
+        wrapper.classList.add('fullscreen');
+        document.body.appendChild(wrapper);
+        iframe.style.height = "100%";
+        iframe.style.width = "100%";
+        document.querySelector('.fullscreen-controls').style.display = 'block';
+        isFullscreen = true;
+      } else {
+        exitFullscreen();
+      }
+    }
+
+    function exitFullscreen() {
+      if (!isFullscreen || !originalContainer) return;
+      const wrapper = document.querySelector('.fullscreen');
+      if (wrapper) {
+        wrapper.classList.remove('fullscreen');
+        originalContainer.appendChild(wrapper);
+        document.querySelector('.fullscreen-controls').style.display = 'none';
+        isFullscreen = false;
+        originalContainer = null;
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && isFullscreen) {
+        exitFullscreen();
+      }
+    });
+  </script>
+
+</body>
+</html>

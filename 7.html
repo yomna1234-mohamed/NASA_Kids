@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Kids - Space Information Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0e29;
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: #1a1f4b;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: #ffffff;
+            margin-left: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: #ffffff;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(10, 14, 41, 0.8), rgba(10, 14, 41, 0.9)), 
+                        url('https://images-assets.nasa.gov/image/PIA18908/PIA18908~orig.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            display: inline-block;
+            padding-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background: #ffffff;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-img {
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f1538;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .content-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .card-content p {
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .info-list {
+            list-style-type: none;
+            margin-top: 15px;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0b0;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list strong {
+            color: #ffffff;
+        }
+
+        /* Solar System Section */
+        .solar-system {
+            background: linear-gradient(rgba(10, 14, 41, 0.9), rgba(10, 14, 41, 0.9)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230a0e29"/><circle cx="20" cy="20" r="1" fill="white" opacity="0.7"/><circle cx="60" cy="40" r="1" fill="white" opacity="0.7"/><circle cx="80" cy="70" r="1" fill="white" opacity="0.7"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.7"/><circle cx="70" cy="20" r="1" fill="white" opacity="0.7"/></svg>');
+            position: relative;
+        }
+
+        .solar-system .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: #07081c;
+            padding: 40px 0 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo h2 {
+            font-size: 24px;
+            color: #ffffff;
+            margin-left: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h1>NASA Kids</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="challenges.html">Challenges</a></li>
+                        <li><a href="earthmap.html">EarthMap</a></li>
+                        <li><a href="games.html">Games</a></li>
+                        <li><a href="sandbox.html">SandBox</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Explore the Universe</h2>
+                <p>Discover fascinating facts about planets, stars, galaxies, and space exploration. Learn about NASA missions, astronaut profiles, and the latest space technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solar System Section -->
+    <section id="solar-system" class="solar-system">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Solar System</h2>
+            </div>
+            <div class="content-grid">
+                <!-- Sun Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2486_stsci-h-p1936a_1800.jpg" alt="The Sun">
+                    </div>
+                    <div class="card-content">
+                        <h3>The Sun</h3>
+                        <p>Our Sun is a 4.6 billion-year-old yellow dwarf star - a hot glowing ball of hydrogen and helium at the center of our solar system.</p>
+                        <ul class="info-list">
+                            <li><strong>Age:</strong> 4.6 billion years</li>
+                            <li><strong>Type:</strong> G-type main-sequence star (G2V)</li>
+                            <li><strong>Diameter:</strong> 1,392,684 km (109 x Earth)</li>
+                            <li><strong>Mass:</strong> 1.989 × 10^30 kg (333,000 x Earth)</li>
+                            <li><strong>Surface Temperature:</strong> 5,500°C</li>
+                            <li><strong>Core Temperature:</strong> 15 million°C</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mercury Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/435_Mercury_Globe-MESSENGER_mosaic_centered_at_0degN-0degE_8k.jpg" alt="Mercury">
+                    </div>
+                    <div class="card-content">
+                        <h3>Mercury</h3>
+                        <p>The smallest planet in our solar system and nearest to the Sun, Mercury is only slightly larger than Earth's Moon.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 4,879 km</li>
+                            <li><strong>Orbit Period:</strong> 88 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> -173°C to 427°C</li>
+                            <li><strong>Moons:</strong> 0</li>
+                            <li><strong>Discovery:</strong> Known to the ancients</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Venus Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/366_Venus_Globe_8k.jpg" alt="Venus">
+                    </div>
+                    <div class="card-content">
+                        <h3>Venus</h3>
+                        <p>Similar in size to Earth, Venus has a thick, toxic atmosphere that traps heat in a runaway greenhouse effect.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 12,104 km</li>
+                            <li><strong>Orbit Period:</strong> 225 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> 462°C</li>
+                            <li><strong>Atmosphere:</strong> 96% CO2, 3% Nitrogen</li>
+                            <li><strong>Moons:</strong> 0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planets Section -->
+    <section id="planets">
+        <div class="container">
+            <div class="section-title">
+                <h2>Planets</h2>
+            </div>
+            <div class="content-grid">
+                <!-- Earth Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/786_earth_1.jpg" alt="Earth">
+                    </div>
+                    <div class="card-content">
+                        <h3>Earth</h3>
+                        <p>Our home planet is the only place we know of so far that's inhabited by living things. It's also the only planet in our solar system with liquid water on the surface.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 12,742 km</li>
+                            <li><strong>Orbit Period:</strong> 365.25 days</li>
+                            <li><strong>Surface Temperature:</strong> -88°C to 58°C</li>
+                            <li><strong>Atmosphere:</strong> 78% Nitrogen, 21% Oxygen</li>
+                            <li><strong>Moons:</strong> 1 (The Moon)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mars Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2480_mars_1.jpg" alt="Mars">
+                    </div>
+                    <div class="card-content">
+                        <h3>Mars</h3>
+                        <p>Mars is a cold desert world. It is half the size of Earth. Mars is sometimes called the Red Planet. It's red because of rusty iron in the ground.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 6,779 km</li>
+                            <li><strong>Orbit Period:</strong> 687 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> -153°C to 20°C</li>
+                            <li><strong>Atmosphere:</strong> 95% CO2, 3% Nitrogen</li>
+                            <li><strong>Moons:</strong> 2 (Phobos & Deimos)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Jupiter Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2485_stsci-h-p1938a-f_1200.jpg" alt="Jupiter">
+                    </div>
+                    <div class="card-content">
+                        <h3>Jupiter</h3>
+                        <p>Jupiter is the largest planet in our solar system. It's a gas giant with a mass more than two and a half times that of all the other planets combined.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 139,820 km</li>
+                            <li><strong>Orbit Period:</strong> 12 Earth years</li>
+                            <li><strong>Surface Temperature:</strong> -108°C</li>
+                            <li><strong>Atmosphere:</strong> 90% Hydrogen, 10% Helium</li>
+                            <li><strong>Moons:</strong> 95 known moons</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Saturn Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2490_stsci-h-p1943a-f_1200.jpg" alt="Saturn">
+                    </div>
+                    <div class="card-content">
+                        <h3>Saturn</h3>
+                        <p>Adorned with a dazzling system of icy rings, Saturn is unique among the planets. It is not the only planet to have rings, but none are as spectacular or complex.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 116,460 km</li>
+                            <li><strong>Orbit Period:</strong> 29 Earth years</li>
+                            <li><strong>Surface Temperature:</strong> -138°C</li>
+                            <li><strong>Atmosphere:</strong> 96% Hydrogen, 3% Helium</li>
+                            <li><strong>Moons:</strong> 146 known moons</li>
+                            <li><strong>Rings:</strong> 7 major rings</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Uranus Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/598_Uranus_Voyager_8k.jpg" alt="Uranus">
+                    </div>
+                    <div class="card-content">
+                        <h3>Uranus</h3>
+                        <p>Uranus is an ice giant. Most of its mass is a hot, dense fluid of "icy" materials – water, methane and ammonia – above a small rocky core.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 50,724 km</li>
+                            <li><strong>Orbit Period:</strong> 84 Earth years</li>
+                            <li><strong>Surface Temperature:</strong> -195°C</li>
+                            <li><strong>Atmosphere:</strong> 83% Hydrogen, 15% Helium</li>
+                            <li><strong>Moons:</strong> 27 known moons</li>
+                            <li><strong>Rotation:</strong> Sideways (97.77° tilt)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Neptune Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/611_Neptune_Full_8k.jpg" alt="Neptune">
+                    </div>
+                    <div class="card-content">
+                        <h3>Neptune</h3>
+                        <p>Neptune is the windiest planet, with winds reaching speeds of 2,100 km/h. It is the only planet in our solar system not visible to the naked eye.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 49,244 km</li>
+                            <li><strong>Orbit Period:</strong> 165 Earth years</li>
+                            <li><strong>Surface Temperature:</strong> -201°C</li>
+                            <li><strong>Atmosphere:</strong> 80% Hydrogen, 19% Helium</li>
+                            <li><strong>Moons:</strong> 14 known moons</li>
+                            <li><strong>Discovery:</strong> 1846 (first mathematically predicted)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moons Section -->
+    <section id="moons">
+        <div class="container">
+            <div class="section-title">
+                <h2>Moons</h2>
+            </div>
+            <div class="content-grid">
+                <!-- Earth's Moon Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/929_moon_phase_8k.jpg" alt="Earth's Moon">
+                    </div>
+                    <div class="card-content">
+                        <h3>Earth's Moon</h3>
+                        <p>The fifth largest moon in the solar system, Earth's Moon is the only place beyond Earth where humans have set foot.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 3,474 km</li>
+                            <li><strong>Orbit Period:</strong> 27.3 days</li>
+                            <li><strong>Surface Temperature:</strong> -173°C to 127°C</li>
+                            <li><strong>Gravity:</strong> 1.62 m/s² (16.6% of Earth)</li>
+                            <li><strong>Distance from Earth:</strong> 384,400 km</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Europa Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2488_PIA19048.jpg" alt="Europa">
+                    </div>
+                    <div class="card-content">
+                        <h3>Europa</h3>
+                        <p>Europa is one of Jupiter's moons. Scientists believe it has a salty ocean beneath its icy crust that could potentially harbor life.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 3,122 km</li>
+                            <li><strong>Orbit Period:</strong> 3.5 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> -160°C at equator</li>
+                            <li><strong>Discovery:</strong> 1610 by Galileo Galilei</li>
+                            <li><strong>Special Feature:</strong> Subsurface ocean</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Titan Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/16246_PIA20016.jpg" alt="Titan">
+                    </div>
+                    <div class="card-content">
+                        <h3>Titan</h3>
+                        <p>Saturn's largest moon, Titan, is the only moon in our solar system with a dense atmosphere and the only place besides Earth with standing bodies of liquid.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 5,150 km</li>
+                            <li><strong>Orbit Period:</strong> 16 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> -179°C</li>
+                            <li><strong>Atmosphere:</strong> 95% Nitrogen, 5% Methane</li>
+                            <li><strong>Special Feature:</strong> Liquid methane lakes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ganymede Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://solarsystem.nasa.gov/system/resources/detail_files/2487_PIA00576.jpg" alt="Ganymede">
+                    </div>
+                    <div class="card-content">
+                        <h3>Ganymede</h3>
+                        <p>Ganymede is the largest moon in our solar system and the only moon with its own magnetic field.</p>
+                        <ul class="info-list">
+                            <li><strong>Diameter:</strong> 5,262 km (larger than Mercury)</li>
+                            <li><strong>Orbit Period:</strong> 7.15 Earth days</li>
+                            <li><strong>Surface Temperature:</strong> -163°C</li>
+                            <li><strong>Discovery:</strong> 1610 by Galileo Galilei</li>
+                            <li><strong>Special Feature:</strong> Intrinsic magnetic field</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stars Section -->
+    <section id="stars">
+        <div class="container">
+            <div class="section-title">
+                <h2>Stars</h2>
+            </div>
+            <div class="content-grid">
+                <!-- Sirius Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/1701/Sirius_HubbleLodge_960.jpg" alt="Sirius">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sirius</h3>
+                        <p>Sirius, also known as the Dog Star, is the brightest star in Earth's night sky. The name means "glowing" in Greek.</p>
+                        <ul class="info-list">
+                            <li><strong>Distance:</strong> 8.6 light years</li>
+                            <li><strong>Brightness:</strong> 25.4 times more luminous than Sun</li>
+                            <li><strong>Mass:</strong> 2.02 times solar mass</li>
+                            <li><strong>Temperature:</strong> 9,940 K</li>
+                            <li><strong>Constellation:</strong> Canis Major</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Betelgeuse Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/2002/Betelgeuse_eso_960.jpg" alt="Betelgeuse">
+                    </div>
+                    <div class="card-content">
+                        <h3>Betelgeuse</h3>
+                        <p>A red supergiant star in the constellation Orion, Betelgeuse is one of the largest and most luminous stars visible to the naked eye.</p>
+                        <ul class="info-list">
+                            <li><strong>Distance:</strong> 548 light years</li>
+                            <li><strong>Diameter:</strong> ~1,000 times solar diameter</li>
+                            <li><strong>Brightness:</strong> 100,000 times more luminous than Sun</li>
+                            <li><strong>Mass:</strong> 11.6 times solar mass</li>
+                            <li><strong>Type:</strong> Red supergiant (M1-2 Ia-ab)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Polaris Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/1601/Polaris_Hubble_960.jpg" alt="Polaris">
+                    </div>
+                    <div class="card-content">
+                        <h3>Polaris</h3>
+                        <p>Also known as the North Star, Polaris is located nearly at the north celestial pole, making it an important navigational reference.</p>
+                        <ul class="info-list">
+                            <li><strong>Distance:</strong> 433 light years</li>
+                            <li><strong>Brightness:</strong> 2,500 times more luminous than Sun</li>
+                            <li><strong>Mass:</strong> 5.4 times solar mass</li>
+                            <li><strong>Temperature:</strong> 6,015 K</li>
+                            <li><strong>Special Feature:</strong> Current North Star</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galaxies Section -->
+    <section id="galaxies">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galaxies</h2>
+            </div>
+            <div class="content-grid">
+                <!-- Milky Way Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/1705/MilkyWayPan_Lopes_4000.jpg" alt="Milky Way">
+                    </div>
+                    <div class="card-content">
+                        <h3>Milky Way</h3>
+                        <p>Our home galaxy, the Milky Way, is a barred spiral galaxy that contains our Solar System. It's about 100,000 light-years across.</p>
+                        <ul class="info-list">
+                            <li><strong>Type:</strong> Barred spiral galaxy (SBc)</li>
+                            <li><strong>Diameter:</strong> 100,000 - 180,000 light years</li>
+                            <li><strong>Stars:</strong> 100-400 billion</li>
+                            <li><strong>Age:</strong> 13.6 billion years</li>
+                            <li><strong>Sun's Location:</strong> Orion Arm, 26,000 ly from center</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Andromeda Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/2208/M31_2022_08_04_BCD_c105_1024.jpg" alt="Andromeda">
+                    </div>
+                    <div class="card-content">
+                        <h3>Andromeda</h3>
+                        <p>The Andromeda Galaxy is the nearest major galaxy to the Milky Way and is on a collision course with our galaxy in about 4.5 billion years.</p>
+                        <ul class="info-list">
+                            <li><strong>Type:</strong> Spiral galaxy (SA(s)b)</li>
+                            <li><strong>Diameter:</strong> 220,000 light years</li>
+                            <li><strong>Distance:</strong> 2.5 million light years</li>
+                            <li><strong>Stars:</strong> ~1 trillion</li>
+                            <li><strong>Special Feature:</strong> Heading toward Milky Way</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Triangulum Card -->
+                <div class="content-card">
+                    <div class="card-img">
+                        <img src="https://apod.nasa.gov/apod/image/1901/M33-HaLRGB-Owens-1100.jpg" alt="Triangulum">
+                    </div>
+                    <div class="card-content">
+                        <h3>Triangulum</h3>
+                        <p>The Triangulum Galaxy is the third-largest member of the Local Group of galaxies, which includes the Milky Way and Andromeda.</p>
+                        <ul class="info-list">
+                            <li><strong>Type:</strong> Spiral galaxy (SA(s)cd)</li>
+                            <li><strong>Diameter:</strong> 60,000 light years</li>
+                            <li><strong>Distance:</strong> 2.73 million light years</li>
+                            <li><strong>Stars:</strong> 40 billion</li>
+                            <li><strong>Constellation:</strong> Triangulum</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2>NASA Kids</h2>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="challenges.html">Challenges</a>
+                    <a href="earthmap.html">EarthMap</a>
+                    <a href="games.html">Games</a>
+                    <a href="sandbox.html">SandBox</a>
+                </div>
+                <p class="copyright">© 2023 NASA Kids. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

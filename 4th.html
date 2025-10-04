@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Name the Planet Game</title>
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --accent:#4b5563;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      min-height:100vh;
+      background:var(--bg);
+      color:#111;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .wrap{max-width:800px;width:100%}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    h1{font-size:22px;margin:0;color:#111}
+    .controls{display:flex;gap:20px;font-size:14px}
+    .board{background:var(--card);border:1px solid #ddd;padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.1)}
+    .question-card{display:flex;gap:20px;align-items:center;margin-bottom:16px}
+    .planet-img{width:150px;height:150px;border-radius:8px;object-fit:cover;border:1px solid #ddd}
+    .q-right{flex:1}
+    .q-title{font-size:18px;font-weight:bold;margin-bottom:8px;color:#111}
+    .fact{color:var(--muted);font-size:14px;margin-bottom:8px}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px}
+    .opt{background:#f9fafb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;border:1px solid #ddd;font-size:14px}
+    .opt:hover{background:#e5e7eb}
+    .opt.correct{background:#d1fae5;border:1px solid #10b981}
+    .opt.wrong{background:#fee2e2;border:1px solid #ef4444}
+    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{cursor:pointer;border:none;border-radius:8px;padding:10px 14px;font-size:14px}
+    #hintBtn{background:#e5e7eb;color:#111}
+    #skipBtn{background:#e5e7eb;color:#111}
+    #nextBtn{background:#4b5563;color:#fff;font-weight:bold}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Name the Planet Game</h1>
+      <div class="controls">
+        <div>Level: <span id="level">1</span></div>
+        <div>Score: <span id="score">0</span></div>
+        <div>Question: <span id="qnum">1</span>/10</div>
+      </div>
+    </header>
+
+    <main class="board">
+      <div class="question-card">
+        <img class="planet-img" id="planetImg" src="" alt="Planet image">
+        <div class="q-right">
+          <div class="q-title" id="prompt">What is the name of this object?</div>
+          <div class="fact" id="fact">Click hint to see more information.</div>
+          <div class="options" id="options"></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>
+          <button id="hintBtn">🔍 Hint</button>
+          <button id="skipBtn">⏭️ Skip</button>
+        </div>
+        <div>
+          <button id="nextBtn">Next Question</button>
+        </div>
+      </div>
+    </main>
+    <p style="margin-top:12px;font-size:13px;color:#444">Rules: Each correct answer gives +10 points. Wrong answers lose 5 points. Skipping costs 2 points. Hints show facts but no penalty.</p>
+  </div>
+
+  <script>
+    // Big pool of 100 questions (planets repeated with different facts)
+    const baseItems = [
+      { id:'mercury', name:'Mercury', img:'https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg', facts:[
+        'Closest planet to the Sun, extremely hot during the day.',
+        'Mercury has almost no atmosphere.',
+        'A year on Mercury is only 88 Earth days.'
+      ]},
+      { id:'venus', name:'Venus', img:'https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg', facts:[
+        'Thick atmosphere with high surface temperature and pressure.',
+        'Venus rotates in the opposite direction to most planets.',
+        'It is sometimes called Earth’s twin due to its similar size.'
+      ]},
+      { id:'earth', name:'Earth', img:'https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg', facts:[
+        'Our home planet, the only one known to support life.',
+        'Earth is 71% covered in water.',
+        'The atmosphere protects life by blocking harmful solar radiation.'
+      ]},
+      { id:'mars', name:'Mars', img:'https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg', facts:[
+        'The Red Planet with valleys, volcanoes, and possible past water.',
+        'Olympus Mons on Mars is the largest volcano in the solar system.',
+        'Mars has two small moons: Phobos and Deimos.'
+      ]},
+      { id:'jupiter', name:'Jupiter', img:'https://upload.wikimedia.org/wikipedia/commons/e/e2/Jupiter.jpg', facts:[
+        'The largest planet with a giant red storm and dozens of moons.',
+        'Jupiter has a strong magnetic field.',
+        'The Great Red Spot is a storm larger than Earth.'
+      ]},
+      { id:'saturn', name:'Saturn', img:'https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg', facts:[
+        'Famous for its rings made of ice and rock.',
+        'Saturn is less dense than water.',
+        'It has over 80 known moons.'
+      ]},
+      { id:'uranus', name:'Uranus', img:'https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg', facts:[
+        'Tilted on its side, it has a blue-green color due to methane.',
+        'Uranus has 13 faint rings.',
+        'It was the first planet discovered with a telescope.'
+      ]},
+      { id:'neptune', name:'Neptune', img:'https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg', facts:[
+        'Dark blue planet, farthest from the Sun with strong winds.',
+        'Neptune has a storm called the Great Dark Spot.',
+        'It takes 165 Earth years to orbit the Sun.'
+      ]},
+      { id:'moon', name:'The Moon', img:'https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg', facts:[
+        'Earth’s natural satellite and the first body humans landed on.',
+        'The Moon causes tides on Earth.',
+        'It has phases depending on its position relative to Earth and Sun.'
+      ]},
+      { id:'ceres', name:'Ceres', img:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Ceres_Dwarf_Planet.jpg', facts:[
+        'A dwarf planet in the asteroid belt between Mars and Jupiter.',
+        'Ceres was the first dwarf planet visited by a spacecraft (Dawn).',
+        'It makes up about 25% of the asteroid belt’s mass.'
+      ]}
+    ];
+
+    // Expand to ~100 questions by duplicating with different facts
+    const items = [];
+    baseItems.forEach(item => {
+      item.facts.forEach(f => {
+        items.push({ id:item.id, name:item.name, img:item.img, fact:f });
+      });
+    });
+
+    let score = 0;
+    let level = 1;
+    let current = null;
+    let questionIndex = 0;
+    let roundQuestions = [];
+    let usedQuestions = new Set(); // Track used questions
+
+    const scoreEl = document.getElementById('score');
+    const levelEl = document.getElementById('level');
+    const qnumEl = document.getElementById('qnum');
+    const imgEl = document.getElementById('planetImg');
+    const promptEl = document.getElementById('prompt');
+    const factEl = document.getElementById('fact');
+    const optionsEl = document.getElementById('options');
+    const hintBtn = document.getElementById('hintBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function shuffle(arr){
+      return arr.slice().sort(()=>Math.random()-0.5);
+    }
+
+    function startRound(){
+      // Reset used questions
+      usedQuestions.clear();
+      
+      // Get unique questions for this round
+      const availableQuestions = [...items];
+      roundQuestions = [];
+      
+      for (let i = 0; i < 10 && availableQuestions.length > 0; i++) {
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const question = availableQuestions.splice(randomIndex, 1)[0];
+        roundQuestions.push(question);
+        usedQuestions.add(question.id + question.fact); // Track unique identifier
+      }
+      
+      questionIndex = 0;
+      makeQuestion();
+    }
+
+    function makeQuestion(){
+      if(questionIndex >= roundQuestions.length){
+        alert("Round finished! Your score: "+score);
+        startRound();
+        return;
+      }
+      current = roundQuestions[questionIndex];
+      const pool = items.filter(item => 
+        !usedQuestions.has(item.id + item.fact) || item.id === current.id
+      );
+      const wrong = pool.filter(i=>i.name!==current.name).slice(0,3).map(i=>i.name);
+      const choices = shuffle([current.name, ...wrong]);
+
+      imgEl.src = current.img;
+      promptEl.textContent = 'What is the name of this celestial body?';
+      factEl.textContent = 'Click hint to see more information.';
+      optionsEl.innerHTML = '';
+
+      choices.forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.textContent = text;
+        btn.addEventListener('click', () => handleAnswer(btn, text));
+        optionsEl.appendChild(btn);
+      });
+
+      qnumEl.textContent = questionIndex+1;
+    }
+
+    function handleAnswer(btn, text){
+      if (!btn || btn.disabled) return;
+      document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+
+      if (text === current.name){
+        btn.classList.add('correct');
+        score += 10;
+        factEl.textContent = "✅ Correct! More info: " + current.fact;
+      } else {
+        btn.classList.add('wrong');
+        Array.from(document.querySelectorAll('.opt')).forEach(o=>{
+          if (o.textContent === current.name) o.classList.add('correct');
+        });
+        score = Math.max(0, score - 5);
+        factEl.textContent = "❌ Wrong. The correct answer is " + current.name + ". Fact: " + current.fact;
+      }
+      level = Math.floor(score/30)+1;
+      updateUI();
+    }
+
+    hintBtn.addEventListener('click', () => {
+      if (!current) return;
+      factEl.textContent = current.fact;
+    });
+
+    skipBtn.addEventListener('click', () => {
+      score = Math.max(0, score - 2);
+      questionIndex++;
+      makeQuestion();
+      updateUI();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      questionIndex++;
+      makeQuestion();
+    });
+
+    function updateUI(){
+      scoreEl.textContent = score;
+      levelEl.textContent = level;
+    }
+
+    startRound();
+    updateUI();
+  </script>
+</body>
+</html>

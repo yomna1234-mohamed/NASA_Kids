@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket Builder - NASA Kids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a192f 0%, #1a3a6b 50%, #0a192f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(10, 25, 47, 0.95);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #4dabf7;
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Game Header */
+        .game-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .game-title {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #4dabf7;
+            background: linear-gradient(45deg, #4dabf7, #a5d8ff, #ffd43b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #4dabf7; }
+            to { text-shadow: 0 0 20px #4dabf7, 0 0 30px #4dabf7; }
+        }
+
+        .game-description {
+            font-size: 1.3rem;
+            color: #e0f2ff;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        /* Game Layout */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Parts Inventory */
+        .parts-inventory {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(77, 171, 247, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .inventory-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4dabf7;
+            text-align: center;
+        }
+
+        .parts-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: #a5d8ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .parts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .part-item {
+            background: rgba(77, 171, 247, 0.2);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: grab;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .part-item:hover {
+            background: rgba(77, 171, 247, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .part-icon {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .part-info {
+            flex: 1;
+        }
+
+        .part-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .part-desc {
+            font-size: 0.8rem;
+            color: #e0f2ff;
+            opacity: 0.8;
+        }
+
+        /* Building Area - IMPROVED */
+        .building-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(77, 171, 247, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            min-height: 700px;
+        }
+
+        .building-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4dabf7;
+            text-align: center;
+        }
+
+        .rocket-assembly {
+            flex: 1;
+            background: radial-gradient(circle at center, rgba(77, 171, 247, 0.1) 0%, transparent 70%);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: visible;
+            border: 2px dashed rgba(77, 171, 247, 0.5);
+            min-height: 550px;
+        }
+
+        .assembly-line {
+            position: relative;
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 0;
+        }
+
+        .rocket-part {
+            width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .part-nose {
+            height: 60px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .part-body {
+            height: 100px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .part-engine {
+            height: 80px;
+            border-radius: 0 0 10px 10px;
+            position: relative;
+        }
+
+        .part-fin {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            height: 40px;
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+        }
+
+        .fin-left {
+            left: -35px;
+        }
+
+        .fin-right {
+            right: -35px;
+        }
+
+        .engine-nozzle {
+            position: absolute;
+            bottom: -20px;
+            width: 60px;
+            height: 20px;
+            background: #333;
+            border-radius: 0 0 10px 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .fuel-tank {
+            height: 80px;
+            border-radius: 10px;
+        }
+
+        .guidance {
+            height: 40px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .connection-point {
+            width: 80px;
+            height: 8px;
+            background: rgba(77, 171, 247, 0.3);
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        /* IMPROVED Drop Zones */
+        .drop-zone {
+            width: 120px;
+            height: 120px;
+            border: 3px dashed rgba(77, 171, 247, 0.6);
+            border-radius: 15px;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(77, 171, 247, 0.1);
+            padding: 10px;
+            position: relative;
+        }
+
+        .drop-zone::before {
+            content: attr(data-zone);
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #a5d8ff;
+        }
+
+        .drop-zone.highlight {
+            border-color: #4dabf7;
+            background: rgba(77, 171, 247, 0.2);
+            color: #4dabf7;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(77, 171, 247, 0.4);
+        }
+
+        .drop-zone.filled {
+            border-style: solid;
+            border-color: #51cf66;
+            background: rgba(81, 207, 102, 0.1);
+        }
+
+        .zone-instruction {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        /* Launch Controls */
+        .launch-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .launch-btn {
+            background: linear-gradient(45deg, #4dabf7, #1e88e5);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 25px rgba(77, 171, 247, 0.4);
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(77, 171, 247, 0.6);
+        }
+
+        .launch-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .reset-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Mission Info */
+        .mission-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(77, 171, 247, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+        }
+
+        .mission-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4dabf7;
+            text-align: center;
+        }
+
+        .target-info {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .target-name {
+            font-size: 1.5rem;
+            color: #ffd43b;
+            margin-bottom: 10px;
+        }
+
+        .target-distance {
+            font-size: 1.1rem;
+            color: #a5d8ff;
+            margin-bottom: 15px;
+        }
+
+        .requirements {
+            margin-bottom: 20px;
+        }
+
+        .requirements-title {
+            font-size: 1.2rem;
+            color: #a5d8ff;
+            margin-bottom: 10px;
+        }
+
+        .requirement-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .requirement-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+
+        .requirement-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .status-met {
+            background: #51cf66;
+            color: white;
+        }
+
+        .status-missing {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Launch Animation */
+        .launch-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .space-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0a192f 0%, #000 70%);
+            z-index: -1;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 40% 70%, white, transparent),
+                radial-gradient(1px 1px at 60% 20%, white, transparent),
+                radial-gradient(1px 1px at 80% 50%, white, transparent),
+                radial-gradient(2px 2px at 30% 80%, white, transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #4dabf7, #1a3a6b);
+            width: 100px;
+            height: 100px;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .launch-rocket {
+            position: relative;
+            width: 80px;
+            margin-bottom: 50px;
+            z-index: 2;
+            transition: transform 0.1s linear;
+        }
+
+        .launch-flames {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 80px;
+            background: linear-gradient(to top, #ffa500, #ff4500, transparent);
+            border-radius: 50% 50% 0 0;
+            filter: blur(5px);
+            animation: flame 0.3s infinite alternate;
+        }
+
+        @keyframes flame {
+            0% { height: 80px; }
+            100% { height: 120px; }
+        }
+
+        .launch-status {
+            font-size: 2rem;
+            color: #a5d8ff;
+            text-align: center;
+            margin-top: 30px;
+            z-index: 2;
+        }
+
+        .failure-reason {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+            max-width: 500px;
+            line-height: 1.5;
+            z-index: 2;
+        }
+
+        .success-message {
+            font-size: 1.2rem;
+            color: #51cf66;
+            text-align: center;
+            margin-top: 15px;
+            max-width: 500px;
+            line-height: 1.5;
+            z-index: 2;
+        }
+
+        .explosion {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff6b6b, #ffa500, transparent);
+            opacity: 0;
+            z-index: 3;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 25, 47, 0.9);
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #1e3a5f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+            background-color: #4dabf7;
+        }
+
+        .copyright {
+            color: #a5d8ff;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .game-title {
+                font-size: 2.5rem;
+            }
+
+            .launch-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .rocket-assembly {
+                min-height: 400px;
+            }
+
+            .assembly-line {
+                width: 100px;
+            }
+
+            .drop-zone {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rocket-assembly {
+                min-height: 350px;
+            }
+
+            .assembly-line {
+                width: 90px;
+            }
+
+            .drop-zone {
+                width: 90px;
+                height: 90px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/1200px-NASA_logo.svg.png" alt="NASA Logo">
+            NASA Kids
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="earth-map.html">Earth Map</a>
+            <a href="games.html">Games</a>
+            <a href="sandbox.html">SandBox</a>
+            <a href="contact-us.html">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <h1 class="game-title">Rocket Builder</h1>
+            <p class="game-description">Build your rocket piece by piece! Drag and drop parts to build your rocket. If built correctly, it will reach the target!</p>
+        </div>
+
+        <!-- Game Layout -->
+        <div class="game-layout">
+            <!-- Parts Inventory -->
+            <div class="parts-inventory">
+                <h2 class="inventory-title">Rocket Parts</h2>
+                
+                <div class="parts-categories">
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-arrow-up"></i> Nose Cones</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="nose-aero" data-type="nose">
+                                <div class="part-icon">🚀</div>
+                                <div class="part-info">
+                                    <div class="part-name">Aerodynamic Nose</div>
+                                    <div class="part-desc">Reduces air resistance</div>
+                                    
+                                </div>
+                                
+                            </div>
+                            <div class="part-item" draggable="true" data-part="nose-heavy" data-type="nose">
+                                <div class="part-icon">🔴</div>
+                                <div class="part-info">
+                                    <div class="part-name">Heavy Nose</div>
+                                    <div class="part-desc">Good for stability</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-rocket"></i> Rocket Body</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="body-light" data-type="body">
+                                <div class="part-icon">🔵</div>
+                                <div class="part-info">
+                                    <div class="part-name">Light Body</div>
+                                    <div class="part-desc">Easy to lift</div>
+                                </div>
+                            </div>
+                            <div class="part-item" draggable="true" data-part="body-strong" data-type="body">
+                                <div class="part-icon">🟢</div>
+                                <div class="part-info">
+                                    <div class="part-name">Strong Body</div>
+                                    <div class="part-desc">Withstands pressure</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-fire"></i> Engines</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="engine-small" data-type="engine">
+                                <div class="part-icon">🔥</div>
+                                <div class="part-info">
+                                    <div class="part-name">Small Engine</div>
+                                    <div class="part-desc">Basic power</div>
+                                </div>
+                            </div>
+                            <div class="part-item" draggable="true" data-part="engine-large" data-type="engine">
+                                <div class="part-icon">💥</div>
+                                <div class="part-info">
+                                    <div class="part-name">Large Engine</div>
+                                    <div class="part-desc">More thrust</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-gas-pump"></i> Fuel Tanks</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="fuel-small" data-type="fuel">
+                                <div class="part-icon">⛽</div>
+                                <div class="part-info">
+                                    <div class="part-name">Small Tank</div>
+                                    <div class="part-desc">Limited range</div>
+                                </div>
+                            </div>
+                            <div class="part-item" draggable="true" data-part="fuel-large" data-type="fuel">
+                                <div class="part-icon">🛢️</div>
+                                <div class="part-info">
+                                    <div class="part-name">Large Tank</div>
+                                    <div class="part-desc">Long distance</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-compass"></i> Guidance</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="guidance-basic" data-type="guidance">
+                                <div class="part-icon">🧭</div>
+                                <div class="part-info">
+                                    <div class="part-name">Basic Guidance</div>
+                                    <div class="part-desc">Simple navigation</div>
+                                </div>
+                            </div>
+                            <div class="part-item" draggable="true" data-part="guidance-advanced" data-type="guidance">
+                                <div class="part-icon">🛰️</div>
+                                <div class="part-info">
+                                    <div class="part-name">Advanced GPS</div>
+                                    <div class="part-desc">Precise targeting</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category">
+                        <h3 class="category-title"><i class="fas fa-arrows-alt-v"></i> Fins</h3>
+                        <div class="parts-list">
+                            <div class="part-item" draggable="true" data-part="fins-small" data-type="fins">
+                                <div class="part-icon">✈️</div>
+                                <div class="part-info">
+                                    <div class="part-name">Small Fins</div>
+                                    <div class="part-desc">Basic stability</div>
+                                </div>
+                            </div>
+                            <div class="part-item" draggable="true" data-part="fins-large" data-type="fins">
+                                <div class="part-icon">🎯</div>
+                                <div class="part-info">
+                                    <div class="part-name">Large Fins</div>
+                                    <div class="part-desc">Better control</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Building Area - IMPROVED -->
+            <div class="building-area">
+                <h2 class="building-title">Build Your Rocket</h2>
+                
+                <div class="rocket-assembly">
+                    <div class="assembly-line" id="assemblyLine">
+                        <div class="drop-zone" data-zone="guidance">
+                            Guidance System
+                            <div class="zone-instruction">Drag guidance part here</div>
+                        </div>
+                        <div class="connection-point"></div>
+                        <div class="drop-zone" data-zone="nose">
+                            Nose Cone
+                            <div class="zone-instruction">Drag nose part here</div>
+                        </div>
+                        <div class="connection-point"></div>
+                        <div class="drop-zone" data-zone="body">
+                            Rocket Body
+                            <div class="zone-instruction">Drag body part here</div>
+                        </div>
+                        <div class="connection-point"></div>
+                        <div class="drop-zone" data-zone="fuel">
+                            Fuel Tank
+                            <div class="zone-instruction">Drag fuel part here</div>
+                        </div>
+                        <div class="connection-point"></div>
+                        <div class="drop-zone" data-zone="engine">
+                            Engine
+                            <div class="zone-instruction">Drag engine part here</div>
+                        </div>
+                        <div class="connection-point"></div>
+                        <div class="drop-zone" data-zone="fins">
+                            Fins
+                            <div class="zone-instruction">Drag fins part here</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="launch-controls">
+                    <button class="launch-btn" id="launchButton">
+                        <i class="fas fa-rocket"></i> LAUNCH ROCKET
+                    </button>
+                    <button class="reset-btn" id="resetButton">
+                        <i class="fas fa-redo"></i> RESET ROCKET
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mission Info -->
+            <div class="mission-info">
+                <h2 class="mission-title">Mission: Moon Landing</h2>
+                
+                <div class="target-info">
+                    <div class="target-name">🌙 The Moon</div>
+                    <div class="target-distance">Distance: 384,400 km</div>
+                    <div class="target-difficulty">Difficulty: Medium</div>
+                </div>
+                
+                <div class="requirements">
+                    <h3 class="requirements-title">Rocket Requirements:</h3>
+                    <ul class="requirement-list">
+                        <li class="requirement-item">
+                            <div class="requirement-status status-missing">!</div>
+                            <div>Large Engine for enough thrust</div>
+                        </li>
+                        <li class="requirement-item">
+                            <div class="requirement-status status-missing">!</div>
+                            <div>Large Fuel Tank for long distance</div>
+                        </li>
+                        <li class="requirement-item">
+                            <div class="requirement-status status-missing">!</div>
+                            <div>Aerodynamic Nose for efficiency</div>
+                        </li>
+                        <li class="requirement-item">
+                            <div class="requirement-status status-missing">!</div>
+                            <div>Advanced GPS for precise landing</div>
+                        </li>
+                        <li class="requirement-item">
+                            <div class="requirement-status status-missing">!</div>
+                            <div>Large Fins for stability</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="completion-status">
+                    <h3 class="requirements-title">Build Progress:</h3>
+                    <div class="progress-container" style="margin-top: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="color: #a5d8ff; font-size: 0.9rem;">Rocket Completion</span>
+                            <span style="color: #4dabf7; font-size: 0.9rem;" id="completionPercent">0%</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div id="completionBar" style="height: 100%; background: linear-gradient(45deg, #4dabf7, #a5d8ff); border-radius: 4px; width: 0%; transition: width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Launch Animation -->
+    <div class="launch-animation" id="launchAnimation">
+        <div class="space-background"></div>
+        <div class="stars"></div>
+        <div class="planet" id="earth"></div>
+        <div class="planet" id="moon" style="width: 50px; height: 50px; top: 50px; left: 80%; background: radial-gradient(circle at 30% 30%, #ccc, #666);"></div>
+        
+        <div class="launch-rocket" id="launchRocket">
+            <div class="launch-flames"></div>
+        </div>
+        
+        <div class="explosion" id="explosion"></div>
+        
+        <div class="launch-status" id="launchStatus">Launching...</div>
+        <div class="failure-reason" id="failureReason"></div>
+        <div class="success-message" id="successMessage"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-icons">
+            
+        </div>
+        <div class="copyright">
+            &copy; 2025 NASA Kids. All rights reserved. | This site is for educational purposes.
+        </div>
+    </footer>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentRocket: {
+                nose: null,
+                body: null,
+                engine: null,
+                fuel: null,
+                guidance: null,
+                fins: null
+            },
+            missionRequirements: {
+                nose: 'nose-aero',
+                body: 'body-strong',
+                engine: 'engine-large',
+                fuel: 'fuel-large',
+                guidance: 'guidance-advanced',
+                fins: 'fins-large'
+            },
+            failureReasons: {
+                'engine-small': 'Not enough engine power! The rocket cannot escape Earth\'s gravity.',
+                'fuel-small': 'Ran out of fuel! The rocket didn\'t have enough propellant to reach the Moon.',
+                'fins-small': 'Poor stability! The rocket became unstable and lost control.',
+                'fins-null': 'No fins! The rocket cannot maintain stable flight.',
+                'guidance-basic': 'Navigation error! The rocket missed the Moon and continued into space.',
+                'nose-heavy': 'Too much drag! The heavy nose cone created too much air resistance.',
+                'body-light': 'Structural failure! The light body couldn\'t withstand launch forces.'
+            },
+            successMessages: {
+                'moon': 'Congratulations! Your rocket successfully landed on the Moon!'
+            }
+        };
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDragAndDrop();
+            setupLaunchButton();
+            setupResetButton();
+            updateCompletionStatus();
+        });
+
+        // Setup drag and drop functionality
+        function setupDragAndDrop() {
+            const partItems = document.querySelectorAll('.part-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            // Add drag event listeners to parts
+            partItems.forEach(part => {
+                part.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', JSON.stringify({
+                        part: this.dataset.part,
+                        type: this.dataset.type
+                    }));
+                    this.style.opacity = '0.6';
+                });
+
+                part.addEventListener('dragend', function() {
+                    this.style.opacity = '1';
+                });
+            });
+
+            // Add drop event listeners to zones
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('highlight');
+                });
+
+                zone.addEventListener('dragleave', function() {
+                    this.classList.remove('highlight');
+                });
+
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('highlight');
+                    
+                    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                    const partType = data.type;
+                    const partId = data.part;
+                    
+                    // Add part to rocket
+                    addPartToRocket(partType, partId, this);
+                });
+            });
+        }
+
+        // Add part to rocket assembly
+        function addPartToRocket(partType, partId, zone) {
+            // Update game state
+            gameState.currentRocket[partType] = partId;
+            
+            // Create visual part
+            const partElement = document.createElement('div');
+            partElement.className = `rocket-part part-${partType}`;
+            partElement.dataset.part = partId;
+            partElement.dataset.type = partType;
+            
+            // Set part appearance based on type and specific part
+            switch(partType) {
+                case 'nose':
+                    partElement.className += ' part-nose';
+                    if (partId === 'nose-aero') {
+                        partElement.style.background = 'linear-gradient(45deg, #4dabf7, #74c0fc)';
+                    } else {
+                        partElement.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e)';
+                    }
+                    break;
+                    
+                case 'body':
+                    partElement.className += ' part-body';
+                    if (partId === 'body-light') {
+                        partElement.style.background = 'linear-gradient(45deg, #a5d8ff, #e7f5ff)';
+                        partElement.style.height = '80px';
+                    } else {
+                        partElement.style.background = 'linear-gradient(45deg, #51cf66, #69db7c)';
+                        partElement.style.height = '100px';
+                    }
+                    break;
+                    
+                case 'engine':
+                    partElement.className += ' part-engine';
+                    if (partId === 'engine-small') {
+                        partElement.style.background = 'linear-gradient(45deg, #ffa500, #ffd43b)';
+                        partElement.style.height = '60px';
+                    } else {
+                        partElement.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e)';
+                        partElement.style.height = '80px';
+                    }
+                    
+                    // Add nozzle
+                    const nozzle = document.createElement('div');
+                    nozzle.className = 'engine-nozzle';
+                    partElement.appendChild(nozzle);
+                    break;
+                    
+                case 'fuel':
+                    partElement.className += ' fuel-tank';
+                    if (partId === 'fuel-small') {
+                        partElement.style.background = 'linear-gradient(45deg, #ffd43b, #fff9db)';
+                    } else {
+                        partElement.style.background = 'linear-gradient(45deg, #ffa500, #ffd43b)';
+                    }
+                    break;
+                    
+                case 'guidance':
+                    partElement.className += ' guidance';
+                    if (partId === 'guidance-basic') {
+                        partElement.style.background = 'linear-gradient(45deg, #ced4da, #e9ecef)';
+                    } else {
+                        partElement.style.background = 'linear-gradient(45deg, #4dabf7, #a5d8ff)';
+                    }
+                    break;
+                    
+                case 'fins':
+                    partElement.className += ' part-engine'; // Reuse engine style
+                    partElement.style.background = 'transparent';
+                    partElement.style.position = 'relative';
+                    
+                    // Add left fin
+                    const leftFin = document.createElement('div');
+                    leftFin.className = 'part-fin fin-left';
+                    if (partId === 'fins-small') {
+                        leftFin.style.background = '#ff6b6b';
+                        leftFin.style.width = '20px';
+                        leftFin.style.height = '30px';
+                    } else {
+                        leftFin.style.background = '#4dabf7';
+                        leftFin.style.width = '30px';
+                        leftFin.style.height = '40px';
+                    }
+                    partElement.appendChild(leftFin);
+                    
+                    // Add right fin
+                    const rightFin = document.createElement('div');
+                    rightFin.className = 'part-fin fin-right';
+                    if (partId === 'fins-small') {
+                        rightFin.style.background = '#ff6b6b';
+                        rightFin.style.width = '20px';
+                        rightFin.style.height = '30px';
+                    } else {
+                        rightFin.style.background = '#4dabf7';
+                        rightFin.style.width = '30px';
+                        rightFin.style.height = '40px';
+                    }
+                    partElement.appendChild(rightFin);
+                    break;
+            }
+            
+            // Replace drop zone with part
+            zone.parentNode.replaceChild(partElement, zone);
+            zone.classList.add('filled');
+            
+            // Update requirements display and completion status
+            updateRequirementsDisplay();
+            updateCompletionStatus();
+        }
+
+        // Update requirements display
+        function updateRequirementsDisplay() {
+            const requirementItems = document.querySelectorAll('.requirement-item');
+            
+            requirementItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                let requirementMet = false;
+                
+                // Check which requirement this is and if it's met
+                if (text.includes('engine') && gameState.currentRocket.engine === 'engine-large') {
+                    requirementMet = true;
+                } else if (text.includes('fuel') && gameState.currentRocket.fuel === 'fuel-large') {
+                    requirementMet = true;
+                } else if (text.includes('nose') && gameState.currentRocket.nose === 'nose-aero') {
+                    requirementMet = true;
+                } else if (text.includes('gps') && gameState.currentRocket.guidance === 'guidance-advanced') {
+                    requirementMet = true;
+                } else if (text.includes('fins') && gameState.currentRocket.fins === 'fins-large') {
+                    requirementMet = true;
+                }
+                
+                // Update status indicator
+                const status = item.querySelector('.requirement-status');
+                if (requirementMet) {
+                    status.className = 'requirement-status status-met';
+                    status.textContent = '✓';
+                } else {
+                    status.className = 'requirement-status status-missing';
+                    status.textContent = '!';
+                }
+            });
+        }
+
+        // Update completion status
+        function updateCompletionStatus() {
+            const totalParts = Object.keys(gameState.currentRocket).length;
+            const filledParts = Object.values(gameState.currentRocket).filter(part => part !== null).length;
+            const completionPercentage = Math.round((filledParts / totalParts) * 100);
+            
+            document.getElementById('completionPercent').textContent = completionPercentage + '%';
+            document.getElementById('completionBar').style.width = completionPercentage + '%';
+            
+            // Enable/disable launch button
+            const launchButton = document.getElementById('launchButton');
+            if (filledParts === totalParts) {
+                launchButton.disabled = false;
+            } else {
+                launchButton.disabled = true;
+            }
+        }
+
+        // Setup launch button
+        function setupLaunchButton() {
+            document.getElementById('launchButton').addEventListener('click', function() {
+                launchRocket();
+            });
+        }
+
+        // Setup reset button
+        function setupResetButton() {
+            document.getElementById('resetButton').addEventListener('click', function() {
+                resetRocket();
+            });
+        }
+
+        // Launch the rocket
+        function launchRocket() {
+            const launchAnimation = document.getElementById('launchAnimation');
+            const launchStatus = document.getElementById('launchStatus');
+            const failureReason = document.getElementById('failureReason');
+            const successMessage = document.getElementById('successMessage');
+            const explosion = document.getElementById('explosion');
+            
+            // Reset messages
+            failureReason.textContent = '';
+            successMessage.textContent = '';
+            
+            // Show launch animation
+            launchAnimation.style.display = 'flex';
+            
+            // Check for failure conditions
+            let failure = null;
+            let success = false;
+            
+            if (gameState.currentRocket.engine === 'engine-small') {
+                failure = 'engine-small';
+            } else if (gameState.currentRocket.fuel === 'fuel-small') {
+                failure = 'fuel-small';
+            } else if (gameState.currentRocket.fins === 'fins-small') {
+                failure = 'fins-small';
+            } else if (gameState.currentRocket.guidance === 'guidance-basic') {
+                failure = 'guidance-basic';
+            } else if (gameState.currentRocket.nose === 'nose-heavy') {
+                failure = 'nose-heavy';
+            } else if (gameState.currentRocket.body === 'body-light') {
+                failure = 'body-light';
+            } else {
+                success = true;
+            }
+            
+            if (failure) {
+                // Rocket has a failure condition
+                setTimeout(() => {
+                    launchStatus.textContent = 'Mission Failed!';
+                    failureReason.textContent = gameState.failureReasons[failure];
+                    
+                    // Show explosion
+                    explosion.style.opacity = '1';
+                    explosion.style.transform = 'scale(1)';
+                    explosion.style.transition = 'all 0.5s ease-out';
+                    
+                    // Hide rocket
+                    document.getElementById('launchRocket').style.display = 'none';
+                }, 2000);
+            } else {
+                // Successful launch!
+                setTimeout(() => {
+                    launchStatus.textContent = 'Mission Successful!';
+                    successMessage.textContent = gameState.successMessages['moon'];
+                    launchStatus.style.color = '#51cf66';
+                }, 2000);
+                
+                // Animate successful flight
+                const rocket = document.getElementById('launchRocket');
+                let progress = 0;
+                const flightInterval = setInterval(() => {
+                    progress += 2;
+                    const x = progress * 0.5;
+                    const y = 100 - progress;
+                    
+                    rocket.style.transform = `translate(${x}vw, -${y}vh)`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(flightInterval);
+                    }
+                }, 50);
+            }
+            
+            // Hide animation after some time
+            setTimeout(() => {
+                launchAnimation.style.display = 'none';
+                // Reset rocket position for next launch
+                const rocket = document.getElementById('launchRocket');
+                rocket.style.transform = 'translate(0, 0)';
+                rocket.style.display = 'block';
+                
+                // Reset explosion
+                explosion.style.opacity = '0';
+                explosion.style.transform = 'scale(0)';
+            }, 8000);
+        }
+
+        // Reset the rocket
+        function resetRocket() {
+            // Reset game state
+            gameState.currentRocket = {
+                nose: null,
+                body: null,
+                engine: null,
+                fuel: null,
+                guidance: null,
+                fins: null
+            };
+            
+            // Reset assembly area
+            const assemblyLine = document.getElementById('assemblyLine');
+            assemblyLine.innerHTML = `
+                <div class="drop-zone" data-zone="guidance">
+                    Guidance System
+                    <div class="zone-instruction">Drag guidance part here</div>
+                </div>
+                <div class="connection-point"></div>
+                <div class="drop-zone" data-zone="nose">
+                    Nose Cone
+                    <div class="zone-instruction">Drag nose part here</div>
+                </div>
+                <div class="connection-point"></div>
+                <div class="drop-zone" data-zone="body">
+                    Rocket Body
+                    <div class="zone-instruction">Drag body part here</div>
+                </div>
+                <div class="connection-point"></div>
+                <div class="drop-zone" data-zone="fuel">
+                    Fuel Tank
+                    <div class="zone-instruction">Drag fuel part here</div>
+                </div>
+                <div class="connection-point"></div>
+                <div class="drop-zone" data-zone="engine">
+                    Engine
+                    <div class="zone-instruction">Drag engine part here</div>
+                </div>
+                <div class="connection-point"></div>
+                <div class="drop-zone" data-zone="fins">
+                    Fins
+                    <div class="zone-instruction">Drag fins part here</div>
+                </div>
+            `;
+            
+            // Reset requirements display and completion status
+            updateRequirementsDisplay();
+            updateCompletionStatus();
+            
+            // Re-setup drag and drop for new zones
+            setupDragAndDrop();
+        }
+    </script>
+</body>
+</html>

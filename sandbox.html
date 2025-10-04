@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Interactive Sandbox</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+      min-height: 100vh;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #0a192f;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .navbar .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #4dabf7;
+    }
+
+    .contact-btn {
+      border: 2px solid #4dabf7;
+      border-radius: 50px;
+      padding: 6px 18px;
+      color: #4dabf7;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #4dabf7;
+      color: white;
+    }
+    
+    .tab-btn {
+      transition: all 0.3s ease;
+    }
+    .tab-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    iframe {
+      transition: all 0.3s ease;
+    }
+    iframe:hover {
+      transform: scale(1.01);
+    }
+  </style>
+</head>
+
+  <div class="navbar">
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/1200px-NASA_logo.svg.png" alt="NASA Logo">
+      NASA Kids
+    </div>
+    
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="challenges.html">Challenges</a>
+      <a href="earth-map.html" >Earth Map</a>
+      <a href="games.html" >Games</a>
+      <a href="sandbox.html" style="color: #4dabf7;">SandBox</a>
+      <a href="contact-us.html" class="contact-btn">Contact Us</a>
+    </div>
+  </div>
+
+<body class="font-sans">
+
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-4xl font-extrabold text-center text-sky-700 mb-8 drop-shadow-md">
+      My Interactive <span class="text-pink-500">Sandbox</span>
+    </h1>
+
+    <!-- Tabs -->
+    <div class="flex justify-center flex-wrap gap-4 mb-8">
+      <button onclick="showTab('blockly', event)" 
+        class="tab-btn bg-sky-600 text-white px-6 py-2 rounded-full font-semibold shadow-md">
+        Blockly
+      </button>
+      <button onclick="showTab('robotix', event)" 
+        class="tab-btn bg-white text-sky-700 px-6 py-2 rounded-full font-semibold shadow-md border border-sky-300">
+        Robotix
+      </button>
+      <button onclick="showTab('editor', event)" 
+        class="tab-btn bg-white text-sky-700 px-6 py-2 rounded-full font-semibold shadow-md border border-sky-300">
+        VS Code
+      </button>
+    </div>
+
+    <!-- Tabs Content -->
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-4">
+      
+      <!-- Blockly -->
+      <div id="blockly" class="tab-content">
+        <iframe 
+          src="https://blockly-demo.appspot.com/static/demos/code/index.html" 
+          class="w-full h-[550px] border-2 border-sky-300 rounded-xl shadow-inner"></iframe>
+      </div>
+
+      <!-- Robotix -->
+      <div id="robotix" class="tab-content hidden">
+        <iframe 
+          src="https://wokwi.com/" 
+          class="w-full h-[550px] border-2 border-pink-300 rounded-xl shadow-inner"></iframe>
+      </div>
+
+      <!-- VS Code -->
+      <div id="editor" class="tab-content hidden">
+        <iframe 
+          src="https://stackblitz.com/edit/web-platform?embed=1&file=index.html" 
+          class="w-full h-[550px] border-2 border-purple-300 rounded-xl shadow-inner"></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NASA Kids</h3>
+                    <p>An interactive platform to teach children about space and science through fun games and challenges.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="sandbox.html">SandBox</a></li>
+                        <li><a href="earth-map.html">Earth Map</a></li>
+                        <li><a href="challenges.html">Challenges</a></li>
+                        <li><a href="suggest-challenge.html">Suggest Challenge</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Additional Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">NASA Image Library</a></li>
+                        <li><a href="#">Educational Videos</a></li>
+                        <li><a href="#">Printable Activities</a></li>
+                        <li><a href="#">Monthly Contests</a></li>
+                        <li><a href="#">NASA Kids Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NASA Kids. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Solar System Page (Hidden by default) -->
+    <div id="solar-system-page" class="solar-system-page" style="display: none;">
+        <div class="container">
+            <div class="solar-system-header">
+                <h1 class="solar-system-title">
+                    <i class="fas fa-globe-americas"></i>
+                    Interactive Solar System
+                </h1>
+                <button class="btn" id="back-to-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+            <div class="solar-system-container">
+                <iframe src="solar-system-main/index.html" 
+                        title="Interactive Solar System" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+  <script>
+    function showTab(tab, event) {
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      // Show selected
+      document.getElementById(tab).classList.remove('hidden');
+
+      // Reset all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-sky-600', 'text-white');
+        btn.classList.add('bg-white', 'text-sky-700', 'border', 'border-sky-300');
+      });
+
+      // Activate selected
+      event.target.classList.remove('bg-white', 'text-sky-700', 'border', 'border-sky-300');
+      event.target.classList.add('bg-sky-600', 'text-white');
+    }
+  </script>
+
+</body>
+</html>

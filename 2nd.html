@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Puzzle - NASA Kids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a192f 0%, #1a3a6b 50%, #0a192f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(10, 25, 47, 0.95);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #4dabf7;
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Game Header */
+        .game-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .game-title {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #4dabf7;
+            background: linear-gradient(45deg, #4dabf7, #a5d8ff, #ffd43b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #4dabf7; }
+            to { text-shadow: 0 0 20px #4dabf7, 0 0 30px #4dabf7; }
+        }
+
+        .game-description {
+            font-size: 1.3rem;
+            color: #e0f2ff;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        /* Game Stats */
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            border: 2px solid rgba(77, 171, 247, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4dabf7;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a5d8ff;
+        }
+
+        /* Game Layout */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Game Selection */
+        .game-selection {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(77, 171, 247, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+        }
+
+        .selection-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4dabf7;
+            text-align: center;
+        }
+
+        .game-types {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .game-type {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .game-type:hover {
+            transform: translateY(-5px);
+            background: rgba(77, 171, 247, 0.15);
+            border-color: rgba(77, 171, 247, 0.5);
+        }
+
+        .game-type.active {
+            background: rgba(77, 171, 247, 0.2);
+            border-color: #4dabf7;
+            transform: translateY(-3px);
+        }
+
+        .type-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .type-name {
+            font-size: 1.3rem;
+            color: #a5d8ff;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .type-desc {
+            font-size: 0.9rem;
+            color: #e0f2ff;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Game Area */
+        .game-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(77, 171, 247, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .current-game-title {
+            font-size: 1.8rem;
+            color: #4dabf7;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            background: rgba(77, 171, 247, 0.2);
+            color: white;
+            border: 2px solid #4dabf7;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: #4dabf7;
+            transform: translateY(-2px);
+        }
+
+        /* Puzzle Containers */
+        .puzzle-container {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .puzzle-container.active {
+            display: flex;
+        }
+
+        /* Memory Match Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .memory-card {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4dabf7, #1e88e5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            position: relative;
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card .front,
+        .memory-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .memory-card .front {
+            background: #0a192f;
+            color: white;
+            transform: rotateY(180deg);
+            border: 2px solid #4dabf7;
+        }
+
+        .memory-card .back {
+            background: linear-gradient(135deg, #4dabf7, #1e88e5);
+            color: transparent;
+        }
+
+        /* Planet Order Game */
+        .planet-order-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .planets-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
+        }
+
+        .planet-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .planet-item.dragging {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+
+        .drop-zones {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .drop-zone {
+            width: 90px;
+            height: 90px;
+            border: 2px dashed rgba(77, 171, 247, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.highlight {
+            border-color: #4dabf7;
+            background: rgba(77, 171, 247, 0.1);
+            color: #4dabf7;
+        }
+
+        .drop-zone.filled {
+            border-style: solid;
+            border-color: #51cf66;
+        }
+
+        /* Constellation Connect */
+        .constellation-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .constellation-canvas {
+            width: 500px;
+            height: 400px;
+            background: rgba(10, 25, 47, 0.7);
+            border: 2px solid #4dabf7;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ffd43b;
+        }
+
+        .star.connected {
+            background: #ffd43b;
+            box-shadow: 0 0 15px #ffd43b;
+        }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: #4dabf7;
+            transform-origin: 0 0;
+        }
+
+        /* Moon Phases Game */
+        .moon-phases-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .phases-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .moon-phase {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ced4da, #e9ecef);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .moon-phase:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .moon-phase.correct {
+            box-shadow: 0 0 20px #51cf66;
+        }
+
+        .moon-phase.incorrect {
+            box-shadow: 0 0 20px #ff6b6b;
+        }
+
+        .phase-shadow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #0a192f;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        /* Game Feedback */
+        .game-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-correct {
+            background: rgba(81, 207, 102, 0.2);
+            color: #51cf66;
+            border: 1px solid #51cf66;
+        }
+
+        .feedback-incorrect {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+
+        .feedback-info {
+            background: rgba(77, 171, 247, 0.2);
+            color: #4dabf7;
+            border: 1px solid #4dabf7;
+        }
+
+        /* Educational Facts */
+        .fact-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #4dabf7;
+        }
+
+        .fact-title {
+            font-size: 1.2rem;
+            color: #a5d8ff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fact-content {
+            color: #e0f2ff;
+            line-height: 1.5;
+        }
+
+        /* Level Progress */
+        .level-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #4dabf7, #a5d8ff);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .level-text {
+            font-size: 0.9rem;
+            color: #a5d8ff;
+            min-width: 80px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 25, 47, 0.9);
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #1e3a5f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+            background-color: #4dabf7;
+        }
+
+        .copyright {
+            color: #a5d8ff;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-selection {
+                order: 2;
+            }
+            
+            .game-area {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .game-title {
+                font-size: 2.5rem;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .constellation-canvas {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .planets-container {
+                gap: 10px;
+            }
+
+            .planet-item {
+                width: 60px;
+                height: 60px;
+                font-size: 0.8rem;
+            }
+
+            .drop-zone {
+                width: 70px;
+                height: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .memory-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .phases-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/1200px-NASA_logo.svg.png" alt="NASA Logo">
+            NASA Kids
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="earth-map.html">Earth Map</a>
+            <a href="games.html">Games</a>
+            <a href="sandbox.html">SandBox</a>
+            <a href="contact-us.html">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <h1 class="game-title">Planet Puzzle</h1>
+            <p class="game-description">Solve challenging puzzles featuring planets, moons, and celestial objects. Match patterns and learn about our solar system!</p>
+            
+            <div class="game-stats">
+                <div class="stat">
+                    <div class="stat-value" id="puzzlesSolved">47</div>
+                    <div class="stat-label">Puzzles Solved</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="currentLevel">5</div>
+                    <div class="stat-label">Current Level</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="accuracy">92%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Layout -->
+        <div class="game-layout">
+            <!-- Game Selection -->
+            <div class="game-selection">
+                <h2 class="selection-title">Space Puzzles</h2>
+                
+                <div class="game-types">
+                    <div class="game-type active" data-game="memory">
+                        <div class="type-icon">🧠</div>
+                        <div class="type-name">Memory Match</div>
+                        <div class="type-desc">Match planets and space objects in this memory challenge</div>
+                    </div>
+                    
+                    <div class="game-type" data-game="order">
+                        <div class="type-icon">🪐</div>
+                        <div class="type-name">Planet Order</div>
+                        <div class="type-desc">Arrange planets in correct order from the Sun</div>
+                    </div>
+                    
+                    <div class="game-type" data-game="constellation">
+                        <div class="type-icon">✨</div>
+                        <div class="type-name">Constellation Connect</div>
+                        <div class="type-desc">Connect stars to form famous constellations</div>
+                    </div>
+                    
+                    <div class="game-type" data-game="moon">
+                        <div class="type-icon">🌙</div>
+                        <div class="type-name">Moon Phases</div>
+                        <div class="type-desc">Identify and arrange the phases of the moon</div>
+                    </div>
+                </div>
+
+                <!-- Level Progress -->
+                <div class="level-progress">
+                    <div class="level-text">Level 5/10</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game Area -->
+            <div class="game-area">
+                <div class="game-title-bar">
+                    <h2 class="current-game-title">Memory Match</h2>
+                    <div class="game-controls">
+                        <button class="control-btn" id="hintButton">
+                            <i class="fas fa-lightbulb"></i> Hint
+                        </button>
+                        <button class="control-btn" id="resetButton">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Memory Match Game -->
+                <div class="puzzle-container active" id="memoryGame">
+                    <div class="memory-grid" id="memoryGrid">
+                        <!-- Memory cards will be generated by JavaScript -->
+                    </div>
+                    <div class="game-feedback feedback-info" id="memoryFeedback">
+                        Find all the matching pairs of space objects!
+                    </div>
+                </div>
+                
+                <!-- Planet Order Game -->
+                <div class="puzzle-container" id="orderGame">
+                    <div class="planet-order-game">
+                        <h3>Arrange the planets in correct order from the Sun</h3>
+                        <div class="planets-container" id="planetsContainer">
+                            <!-- Planets will be generated by JavaScript -->
+                        </div>
+                        <div class="drop-zones" id="dropZones">
+                            <!-- Drop zones will be generated by JavaScript -->
+                        </div>
+                        <div class="game-feedback feedback-info" id="orderFeedback">
+                            Drag planets to their correct positions!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Constellation Game -->
+                <div class="puzzle-container" id="constellationGame">
+                    <div class="constellation-game">
+                        <h3>Connect the stars to form the <span id="constellationName">Big Dipper</span></h3>
+                        <div class="constellation-canvas" id="constellationCanvas">
+                            <!-- Stars and connections will be generated by JavaScript -->
+                        </div>
+                        <div class="game-feedback feedback-info" id="constellationFeedback">
+                            Click on stars in the correct order to form the constellation!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Moon Phases Game -->
+                <div class="puzzle-container" id="moonGame">
+                    <div class="moon-phases-game">
+                        <h3>Select the correct moon phase: <span id="phaseQuestion">First Quarter</span></h3>
+                        <div class="phases-container" id="phasesContainer">
+                            <!-- Moon phases will be generated by JavaScript -->
+                        </div>
+                        <div class="game-feedback feedback-info" id="moonFeedback">
+                            Click on the correct moon phase!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Educational Facts -->
+                <div class="fact-box">
+                    <div class="fact-title">
+                        <i class="fas fa-info-circle"></i> Space Fact
+                    </div>
+                    <div class="fact-content" id="currentFact">
+                        Jupiter is the largest planet in our solar system. It's so big that all the other planets could fit inside it!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 NASA Kids. All rights reserved. | This site is for educational purposes.
+        </div>
+    </footer>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentGame: 'memory',
+            score: 0,
+            level: 5,
+            puzzlesSolved: 47,
+            
+            // Memory Game
+            memoryCards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            
+            // Planet Order Game
+            planets: [
+                { name: 'Mercury', color: '#8B4513', order: 1 },
+                { name: 'Venus', color: '#FFA500', order: 2 },
+                { name: 'Earth', color: '#228B22', order: 3 },
+                { name: 'Mars', color: '#FF4500', order: 4 },
+                { name: 'Jupiter', color: '#DAA520', order: 5 },
+                { name: 'Saturn', color: '#F0E68C', order: 6 },
+                { name: 'Uranus', color: '#87CEEB', order: 7 },
+                { name: 'Neptune', color: '#1E90FF', order: 8 }
+            ],
+            draggedPlanet: null,
+            
+            // Constellation Game
+            currentConstellation: 0,
+            selectedStars: [],
+            constellations: [
+                {
+                    name: 'Big Dipper',
+                    stars: [
+                        { x: 100, y: 100, id: 1 },
+                        { x: 150, y: 150, id: 2 },
+                        { x: 200, y: 120, id: 3 },
+                        { x: 250, y: 170, id: 4 },
+                        { x: 300, y: 140, id: 5 },
+                        { x: 350, y: 190, id: 6 },
+                        { x: 400, y: 160, id: 7 }
+                    ],
+                    connections: [[1,2], [2,3], [3,4], [4,5], [5,6], [6,7], [1,7]]
+                },
+                {
+                    name: 'Orion',
+                    stars: [
+                        { x: 100, y: 200, id: 1 },
+                        { x: 150, y: 150, id: 2 },
+                        { x: 200, y: 200, id: 3 },
+                        { x: 250, y: 250, id: 4 },
+                        { x: 300, y: 200, id: 5 },
+                        { x: 350, y: 150, id: 6 }
+                    ],
+                    connections: [[1,2], [2,3], [3,4], [4,5], [5,6], [2,5]]
+                }
+            ],
+            
+            // Moon Phases Game
+            currentPhase: 0,
+            phases: ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'],
+            phaseShadows: [100, 75, 50, 25, 0, 25, 50, 75] // Percentage of shadow
+        };
+
+        // Space Facts
+        const spaceFacts = [
+            "Jupiter is the largest planet in our solar system. It's so big that all the other planets could fit inside it!",
+            "Venus is the hottest planet in our solar system with surface temperatures hot enough to melt lead!",
+            "A day on Mercury lasts 59 Earth days, but a year is only 88 Earth days!",
+            "Saturn's rings are made of billions of pieces of ice and rock, some as small as dust and others as large as mountains!",
+            "Neptune has the strongest winds in the solar system, reaching speeds of 2,100 km/h!",
+            "The Sun makes up 99.86% of the mass in our entire solar system!",
+            "Mars has the largest volcano in the solar system - Olympus Mons, which is 3 times taller than Mount Everest!",
+            "Uranus rotates on its side, making it unique among the planets in our solar system!"
+        ];
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', function() {
+            setupGameSelection();
+            initializeMemoryGame();
+            initializePlanetOrderGame();
+            initializeConstellationGame();
+            initializeMoonPhasesGame();
+            setupGameControls();
+            showRandomFact();
+        });
+
+        // Setup game selection
+        function setupGameSelection() {
+            const gameTypes = document.querySelectorAll('.game-type');
+            
+            gameTypes.forEach(type => {
+                type.addEventListener('click', function() {
+                    // Update active game type
+                    gameTypes.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Switch to selected game
+                    const gameId = this.dataset.game;
+                    switchGame(gameId);
+                });
+            });
+        }
+
+        // Switch between games
+        function switchGame(gameId) {
+            gameState.currentGame = gameId;
+            
+            // Hide all puzzle containers
+            document.querySelectorAll('.puzzle-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Show selected game
+            document.getElementById(gameId + 'Game').classList.add('active');
+            
+            // Update game title
+            const gameTitles = {
+                memory: 'Memory Match',
+                order: 'Planet Order',
+                constellation: 'Constellation Connect',
+                moon: 'Moon Phases'
+            };
+            document.querySelector('.current-game-title').textContent = gameTitles[gameId];
+            
+            // Reset game state for the new game
+            resetCurrentGame();
+            showRandomFact();
+        }
+
+        // Show random space fact
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * spaceFacts.length);
+            document.getElementById('currentFact').textContent = spaceFacts[randomIndex];
+        }
+
+        // Initialize Memory Game
+        function initializeMemoryGame() {
+            // Create card pairs (space objects)
+            const spaceObjects = ['🪐', '⭐', '🌍', '🚀', '👨‍🚀', '🛰️', '☄️', '🌙'];
+            gameState.memoryCards = [...spaceObjects, ...spaceObjects];
+            
+            // Shuffle cards
+            shuffleArray(gameState.memoryCards);
+            
+            resetMemoryGame();
+        }
+
+        function resetMemoryGame() {
+            gameState.flippedCards = [];
+            gameState.matchedPairs = 0;
+            
+            const memoryGrid = document.getElementById('memoryGrid');
+            memoryGrid.innerHTML = '';
+            
+            // Create memory cards
+            gameState.memoryCards.forEach((object, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.index = index;
+                card.dataset.value = object;
+                
+                card.innerHTML = `
+                    <div class="front">${object}</div>
+                    <div class="back"></div>
+                `;
+                
+                card.addEventListener('click', flipMemoryCard);
+                memoryGrid.appendChild(card);
+            });
+            
+            document.getElementById('memoryFeedback').className = 'game-feedback feedback-info';
+            document.getElementById('memoryFeedback').textContent = 'Find all the matching pairs of space objects!';
+        }
+
+        function flipMemoryCard() {
+            // Don't allow flipping if already flipped or matched
+            if (this.classList.contains('flipped') || gameState.flippedCards.length >= 2) {
+                return;
+            }
+            
+            this.classList.add('flipped');
+            gameState.flippedCards.push(this);
+            
+            if (gameState.flippedCards.length === 2) {
+                checkMemoryMatch();
+            }
+        }
+
+        function checkMemoryMatch() {
+            const [card1, card2] = gameState.flippedCards;
+            const feedback = document.getElementById('memoryFeedback');
+            
+            if (card1.dataset.value === card2.dataset.value) {
+                // Match found
+                gameState.matchedPairs++;
+                feedback.className = 'game-feedback feedback-correct';
+                feedback.textContent = 'Great! You found a match!';
+                
+                gameState.flippedCards = [];
+                
+                // Check for win
+                if (gameState.matchedPairs === gameState.memoryCards.length / 2) {
+                    setTimeout(() => {
+                        feedback.textContent = 'Congratulations! You found all the matches!';
+                        gameState.puzzlesSolved++;
+                        document.getElementById('puzzlesSolved').textContent = gameState.puzzlesSolved;
+                        showRandomFact();
+                    }, 500);
+                }
+            } else {
+                // No match
+                feedback.className = 'game-feedback feedback-incorrect';
+                feedback.textContent = 'Not a match. Try again!';
+                
+                // Flip cards back after a delay
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    gameState.flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        // Initialize Planet Order Game
+        function initializePlanetOrderGame() {
+            resetPlanetOrderGame();
+        }
+
+        function resetPlanetOrderGame() {
+            const planetsContainer = document.getElementById('planetsContainer');
+            const dropZones = document.getElementById('dropZones');
+            
+            planetsContainer.innerHTML = '';
+            dropZones.innerHTML = '';
+            
+            // Shuffle planets
+            const shuffledPlanets = [...gameState.planets];
+            shuffleArray(shuffledPlanets);
+            
+            // Create draggable planets
+            shuffledPlanets.forEach(planet => {
+                const planetElement = document.createElement('div');
+                planetElement.className = 'planet-item';
+                planetElement.textContent = planet.name;
+                planetElement.style.background = `linear-gradient(135deg, ${planet.color}, ${lightenColor(planet.color, 30)})`;
+                planetElement.draggable = true;
+                planetElement.dataset.planet = planet.name;
+                planetElement.dataset.order = planet.order;
+                
+                planetElement.addEventListener('dragstart', dragStart);
+                planetElement.addEventListener('dragend', dragEnd);
+                
+                planetsContainer.appendChild(planetElement);
+            });
+            
+            // Create drop zones
+            for (let i = 1; i <= 8; i++) {
+                const dropZone = document.createElement('div');
+                dropZone.className = 'drop-zone';
+                dropZone.textContent = i;
+                dropZone.dataset.position = i;
+                
+                dropZone.addEventListener('dragover', dragOver);
+                dropZone.addEventListener('dragenter', dragEnter);
+                dropZone.addEventListener('dragleave', dragLeave);
+                dropZone.addEventListener('drop', drop);
+                
+                dropZones.appendChild(dropZone);
+            }
+            
+            document.getElementById('orderFeedback').className = 'game-feedback feedback-info';
+            document.getElementById('orderFeedback').textContent = 'Drag planets to their correct positions!';
+        }
+
+        // Drag and Drop functions for Planet Order Game
+        function dragStart(e) {
+            gameState.draggedPlanet = this;
+            this.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', this.dataset.planet);
+        }
+
+        function dragEnd() {
+            this.classList.remove('dragging');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            this.classList.add('highlight');
+        }
+
+        function dragLeave() {
+            this.classList.remove('highlight');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('highlight');
+            
+            const planetName = gameState.draggedPlanet.dataset.planet;
+            const planetOrder = parseInt(gameState.draggedPlanet.dataset.order);
+            const dropPosition = parseInt(this.dataset.position);
+            
+            // Check if correct
+            if (planetOrder === dropPosition) {
+                this.classList.add('filled');
+                this.textContent = planetName;
+                this.style.background = gameState.draggedPlanet.style.background;
+                gameState.draggedPlanet.style.visibility = 'hidden';
+                
+                // Check if all planets are placed
+                const filledZones = document.querySelectorAll('.drop-zone.filled');
+                if (filledZones.length === 8) {
+                    document.getElementById('orderFeedback').className = 'game-feedback feedback-correct';
+                    document.getElementById('orderFeedback').textContent = 'Perfect! All planets are in correct order!';
+                    gameState.puzzlesSolved++;
+                    document.getElementById('puzzlesSolved').textContent = gameState.puzzlesSolved;
+                    showRandomFact();
+                } else {
+                    document.getElementById('orderFeedback').className = 'game-feedback feedback-correct';
+                    document.getElementById('orderFeedback').textContent = `Correct! ${planetName} is planet number ${planetOrder}`;
+                }
+            } else {
+                document.getElementById('orderFeedback').className = 'game-feedback feedback-incorrect';
+                document.getElementById('orderFeedback').textContent = `Incorrect! ${planetName} is not planet number ${dropPosition}`;
+            }
+        }
+
+        // Initialize Constellation Game
+        function initializeConstellationGame() {
+            resetConstellationGame();
+        }
+
+        function resetConstellationGame() {
+            const canvas = document.getElementById('constellationCanvas');
+            const constellation = gameState.constellations[gameState.currentConstellation];
+            
+            canvas.innerHTML = '';
+            gameState.selectedStars = [];
+            
+            // Update constellation name
+            document.getElementById('constellationName').textContent = constellation.name;
+            
+            // Create stars
+            constellation.stars.forEach(star => {
+                const starElement = document.createElement('div');
+                starElement.className = 'star';
+                starElement.style.left = `${star.x}px`;
+                starElement.style.top = `${star.y}px`;
+                starElement.dataset.id = star.id;
+                
+                starElement.addEventListener('click', selectStar);
+                canvas.appendChild(starElement);
+            });
+            
+            document.getElementById('constellationFeedback').className = 'game-feedback feedback-info';
+            document.getElementById('constellationFeedback').textContent = 'Click on stars in the correct order to form the constellation!';
+        }
+
+        function selectStar() {
+            const starId = parseInt(this.dataset.id);
+            const constellation = gameState.constellations[gameState.currentConstellation];
+            
+            // Check if this star is the next in sequence
+            const expectedNext = gameState.selectedStars.length + 1;
+            const connections = constellation.connections.flat();
+            
+            if (connections[gameState.selectedStars.length] === starId) {
+                this.classList.add('connected');
+                gameState.selectedStars.push(starId);
+                
+                // Draw connection if there's a previous star
+                if (gameState.selectedStars.length > 1) {
+                    drawConnection(
+                        gameState.selectedStars[gameState.selectedStars.length - 2],
+                        starId
+                    );
+                }
+                
+                // Check if constellation is complete
+                if (gameState.selectedStars.length === connections.length) {
+                    document.getElementById('constellationFeedback').className = 'game-feedback feedback-correct';
+                    document.getElementById('constellationFeedback').textContent = 'Excellent! You completed the constellation!';
+                    gameState.puzzlesSolved++;
+                    document.getElementById('puzzlesSolved').textContent = gameState.puzzlesSolved;
+                    
+                    // Move to next constellation after delay
+                    setTimeout(() => {
+                        gameState.currentConstellation = (gameState.currentConstellation + 1) % gameState.constellations.length;
+                        resetConstellationGame();
+                        showRandomFact();
+                    }, 2000);
+                } else {
+                    document.getElementById('constellationFeedback').className = 'game-feedback feedback-correct';
+                    document.getElementById('constellationFeedback').textContent = 'Good! Keep connecting the stars!';
+                }
+            } else {
+                document.getElementById('constellationFeedback').className = 'game-feedback feedback-incorrect';
+                document.getElementById('constellationFeedback').textContent = 'Wrong sequence! Try again from the beginning.';
+                
+                // Reset selection
+                gameState.selectedStars = [];
+                document.querySelectorAll('.star').forEach(star => {
+                    star.classList.remove('connected');
+                });
+                document.querySelectorAll('.connection').forEach(conn => {
+                    conn.remove();
+                });
+            }
+        }
+
+        function drawConnection(fromId, toId) {
+            const canvas = document.getElementById('constellationCanvas');
+            const fromStar = canvas.querySelector(`.star[data-id="${fromId}"]`);
+            const toStar = canvas.querySelector(`.star[data-id="${toId}"]`);
+            
+            const fromRect = fromStar.getBoundingClientRect();
+            const toRect = toStar.getBoundingClientRect();
+            const canvasRect = canvas.getBoundingClientRect();
+            
+            const fromX = fromRect.left + fromRect.width/2 - canvasRect.left;
+            const fromY = fromRect.top + fromRect.height/2 - canvasRect.top;
+            const toX = toRect.left + toRect.width/2 - canvasRect.left;
+            const toY = toRect.top + toRect.height/2 - canvasRect.top;
+            
+            const length = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+            const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+            
+            const connection = document.createElement('div');
+            connection.className = 'connection';
+            connection.style.width = `${length}px`;
+            connection.style.left = `${fromX}px`;
+            connection.style.top = `${fromY}px`;
+            connection.style.transform = `rotate(${angle}deg)`;
+            
+            canvas.appendChild(connection);
+        }
+
+        // Initialize Moon Phases Game
+        function initializeMoonPhasesGame() {
+            resetMoonPhasesGame();
+        }
+
+        function resetMoonPhasesGame() {
+            const phasesContainer = document.getElementById('phasesContainer');
+            phasesContainer.innerHTML = '';
+            
+            // Select a random target phase
+            gameState.currentPhase = Math.floor(Math.random() * gameState.phases.length);
+            document.getElementById('phaseQuestion').textContent = gameState.phases[gameState.currentPhase];
+            
+            // Create moon phase options (include the correct one and random others)
+            const options = [gameState.currentPhase];
+            while (options.length < 4) {
+                const randomPhase = Math.floor(Math.random() * gameState.phases.length);
+                if (!options.includes(randomPhase)) {
+                    options.push(randomPhase);
+                }
+            }
+            shuffleArray(options);
+            
+            // Create moon phase elements
+            options.forEach(phaseIndex => {
+                const phaseElement = document.createElement('div');
+                phaseElement.className = 'moon-phase';
+                phaseElement.dataset.phase = phaseIndex;
+                
+                const shadow = document.createElement('div');
+                shadow.className = 'phase-shadow';
+                shadow.style.clipPath = `inset(0 ${gameState.phaseShadows[phaseIndex]}% 0 0)`;
+                phaseElement.appendChild(shadow);
+                
+                phaseElement.addEventListener('click', checkMoonPhase);
+                phasesContainer.appendChild(phaseElement);
+            });
+            
+            document.getElementById('moonFeedback').className = 'game-feedback feedback-info';
+            document.getElementById('moonFeedback').textContent = 'Click on the correct moon phase!';
+        }
+
+        function checkMoonPhase() {
+            const selectedPhase = parseInt(this.dataset.phase);
+            const feedback = document.getElementById('moonFeedback');
+            
+            if (selectedPhase === gameState.currentPhase) {
+                this.classList.add('correct');
+                feedback.className = 'game-feedback feedback-correct';
+                feedback.textContent = 'Correct! Well done!';
+                gameState.puzzlesSolved++;
+                document.getElementById('puzzlesSolved').textContent = gameState.puzzlesSolved;
+                
+                // Next phase after delay
+                setTimeout(() => {
+                    resetMoonPhasesGame();
+                    showRandomFact();
+                }, 1500);
+            } else {
+                this.classList.add('incorrect');
+                feedback.className = 'game-feedback feedback-incorrect';
+                feedback.textContent = `Incorrect! This is ${gameState.phases[selectedPhase]}`;
+                
+                // Remove incorrect class after delay
+                setTimeout(() => {
+                    this.classList.remove('incorrect');
+                }, 1000);
+            }
+        }
+
+        // Setup game controls
+        function setupGameControls() {
+            document.getElementById('resetButton').addEventListener('click', resetCurrentGame);
+            document.getElementById('hintButton').addEventListener('click', giveHint);
+        }
+
+        // Reset current game
+        function resetCurrentGame() {
+            switch(gameState.currentGame) {
+                case 'memory':
+                    resetMemoryGame();
+                    break;
+                case 'order':
+                    resetPlanetOrderGame();
+                    break;
+                case 'constellation':
+                    resetConstellationGame();
+                    break;
+                case 'moon':
+                    resetMoonPhasesGame();
+                    break;
+            }
+        }
+
+        // Give hint for current game
+        function giveHint() {
+            // This would provide a hint based on the current game
+            // For simplicity, we'll just show a random fact
+            showRandomFact();
+            
+            const feedback = document.querySelector('.game-feedback');
+            feedback.className = 'game-feedback feedback-info';
+            feedback.textContent = 'Hint: Check the space fact below for helpful information!';
+        }
+
+        // Utility functions
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function lightenColor(color, percent) {
+            // Simple color lightening function
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (
+                0x1000000 +
+                (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)
+            ).toString(16).slice(1);
+        }
+    </script>
+</body>
+</html>

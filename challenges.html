@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Kids - Challenges & Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #293759; /* كحلي غامق */
+            --secondary: #1a2d5a; /* كحلي متوسط */
+            --accent: #2d4379; /* كحلي فاتح */
+            --light: #FFFFFF;
+            --dark: #ffffff; /* رمادي غامق */
+            --gray: #807b7b; /* رمادي متوسط */
+            --medium-gray: #c3c3c3; /* رمادي فاتح */
+            --dark-gray: #1a1a1a; /* رمادي داكن جداً */
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #0a192f;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .navbar .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #4dabf7;
+    }
+
+    .contact-btn {
+      border: 2px solid #4dabf7;
+      border-radius: 50px;
+      padding: 6px 18px;
+      color: #4dabf7;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #4dabf7;
+      color: white;
+    }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="white" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="2"/></svg>');
+            background-size: 100px 100px;
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 3rem;
+            color: var(--light);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: var(--light);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--light);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .challenge-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+            background: var(--gray);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .challenge-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .challenge-info {
+            padding: 30px;
+            background: var(--gray);
+            position: relative;
+        }
+        
+        .solution-info {
+            padding: 30px;
+            background: var(--primary);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .section-title i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--light);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .challenge-description {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .details-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .details-box h4 {
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .details-box p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .solution-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .solution-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .solution-item h4 {
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .solution-author {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .solution-text {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .submit-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .submit-section h3 {
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .discover-btn {
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .discover-btn:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (max-width: 1024px) {
+            .challenge-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .solution-info {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .challenge-info, .solution-info {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/1200px-NASA_logo.svg.png" alt="NASA Logo">
+      NASA Kids
+    </div>
+    
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="challenges.html" style="color: #4dabf7;">Challenges</a>
+      <a href="earth-map.html">Earth Map</a>
+      <a href="games.html">Games</a>
+      <a href="sandbox.html">SandBox</a>
+      <a href="contact-us.html" class="contact-btn">Contact Us</a>
+    </div>
+  </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>NASA Kids Challenges</h1>
+            </div>
+            <p class="subtitle">Explore amazing space challenges and help NASA solve them!</p>
+        </header>
+        
+        <!-- Challenge 1 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-satellite"></i>
+                    <h2>Commercializing Low Earth Orbit (LEO)</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>As the commercialization of space rapidly accelerates, the future of business in low Earth orbit (LEO) holds incredible potential, but also presents significant operational, regulatory, and environmental challenges.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Design a sustainable and scalable business model in Low Earth Orbit (LEO).</p>
+                    <p><strong>Details:</strong> The model must explore the unique opportunities of LEO while addressing operational, regulatory, and environmental challenges.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Commercializing Low Earth Orbit (LEO)">
+                        <div class="form-group">
+                            <label for="name1">Your Name:</label>
+                            <input type="text" id="name1" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email1">Your Email:</label>
+                            <input type="email" id="email1" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution1">Your Solution:</label>
+                            <textarea id="solution1" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>LEO Research & Manufacturing Hub</h4>
+                    <p class="solution-author">By: Dr. Elena Rodriguez, Space Industry Consultant</p>
+                    <p class="solution-text">A modular space station dedicated to pharmaceutical research and special alloy manufacturing that can only be produced in microgravity. The station would be funded through research contracts with private companies and government agencies.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Space Tourism & Education Center</h4>
+                    <p class="solution-author">By: Marcus Johnson, Aerospace Engineer</p>
+                    <p class="solution-text">A sustainable space hotel with educational programs for students and researchers. The facility would include virtual reality experiences of space phenomena and host scientific experiments that benefit from the microgravity environment.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Orbital Debris Recycling Station</h4>
+                    <p class="solution-author">By: Space Sustainability Collective</p>
+                    <p class="solution-text">A facility that captures space debris and repurposes the materials for construction in orbit, reducing the cost of launching materials from Earth while cleaning up the orbital environment.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge 2 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-city"></i>
+                    <h2>Data Pathways to Healthy Cities</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>Climate change brings new complexities to consider for maintaining the well-being of society and the environment in cities. Natural resources, ecosystems, and existing infrastructure all must be monitored to ensure high human quality of life.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Use NASA Earth observation data to develop smart strategies for city growth.</p>
+                    <p><strong>Details:</strong> Strategies must focus on maintaining the well-being of people and the environment in the face of climate change.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Data Pathways to Healthy Cities">
+                        <div class="form-group">
+                            <label for="name2">Your Name:</label>
+                            <input type="text" id="name2" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email2">Your Email:</label>
+                            <input type="email" id="email2" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution2">Your Solution:</label>
+                            <textarea id="solution2" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Urban Heat Island Mitigation Planner</h4>
+                    <p class="solution-author">By: Green City Initiative</p>
+                    <p class="solution-text">A decision-support tool that uses NASA's Landsat and MODIS data to identify urban heat islands and recommends optimal locations for green spaces, reflective surfaces, and cooling infrastructure to reduce temperatures in vulnerable neighborhoods.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Coastal Resilience Mapping System</h4>
+                    <p class="solution-author">By: Coastal Planning Associates</p>
+                    <p class="solution-text">An interactive platform combining NASA's satellite elevation data with sea level rise projections to help coastal cities plan infrastructure development, identify flood risks, and implement nature-based solutions like wetland restoration.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Air Quality Corridor Planning</h4>
+                    <p class="solution-author">By: Urban Air Quality Research Group</p>
+                    <p class="solution-text">Using NASA's TEMPO instrument data to map pollution patterns and identify optimal routes for green transportation corridors, pedestrian pathways, and cycling infrastructure that minimize exposure to poor air quality.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge 3 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-dna"></i>
+                    <h2>Space Biology Knowledge Engine</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>Enable a new era of human space exploration! NASA has been conducting biology experiments in space for decades, generating a tremendous amount of information that will need to be considered as humans prepare to revisit the Moon and explore Mars.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Build a dynamic dashboard to summarize NASA bioscience publications and enable users to explore the impacts and results of experiments.</p>
+                    <p><strong>Details:</strong> The dashboard must leverage AI, knowledge graphs, and/or other tools to analyze and categorize bioscience publications.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Space Biology Knowledge Engine">
+                        <div class="form-group">
+                            <label for="name3">Your Name:</label>
+                            <input type="text" id="name3" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email3">Your Email:</label>
+                            <input type="email" id="email3" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution3">Your Solution:</label>
+                            <textarea id="solution3" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>BioSpace Explorer</h4>
+                    <p class="solution-author">By: Data Science for Space Research Team</p>
+                    <p class="solution-text">An interactive knowledge graph visualization tool that connects NASA's biology experiments by organism type, space mission, research findings, and potential applications. Users can explore connections between different studies and filter by specific biological systems or spaceflight effects.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>GeneLab AI Assistant</h4>
+                    <p class="solution-author">By: AI Research Collective</p>
+                    <p class="solution-text">A natural language processing interface that allows researchers to ask questions about space biology findings and receive summarized answers with relevant citations. The system uses machine learning to identify patterns across thousands of publications and experimental datasets.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Space Biology Impact Tracker</h4>
+                    <p class="solution-author">By: Biomedical Research Institute</p>
+                    <p class="solution-text">A dashboard that tracks how space biology research has influenced Earth-based medicine, biotechnology, and our understanding of fundamental biological processes, highlighting the practical benefits of space exploration for healthcare on Earth.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge 4 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-wind"></i>
+                    <h2>Air Quality Forecasting</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>NASA's Tropospheric Emissions: Monitoring of Pollution (TEMPO) mission is revolutionizing air quality monitoring across North America by enabling better forecasts and reducing pollutant exposure.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Develop a web-based app that forecasts air quality.</p>
+                    <p><strong>Details:</strong> The app must integrate real-time TEMPO data with ground-based air quality measurements and weather data.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Air Quality Forecasting">
+                        <div class="form-group">
+                            <label for="name4">Your Name:</label>
+                            <input type="text" id="name4" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email4">Your Email:</label>
+                            <input type="email" id="email4" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution4">Your Solution:</label>
+                            <textarea id="solution4" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>ClearSky Air Quality Forecaster</h4>
+                    <p class="solution-author">By: Environmental Tech Solutions</p>
+                    <p class="solution-text">A mobile and web application that provides personalized air quality forecasts using NASA TEMPO data combined with local weather conditions and user location. The app sends alerts when air quality is expected to deteriorate and suggests less polluted routes for outdoor activities.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Community Air Watch</h4>
+                    <p class="solution-author">By: Civic Technology Group</p>
+                    <p class="solution-text">A community-focused platform that combines TEMPO satellite data with low-cost sensor networks in neighborhoods, allowing residents to track local air pollution sources, understand forecasted air quality, and advocate for cleaner air policies.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Health-Focused Air Quality Advisor</h4>
+                    <p class="solution-author">By: Public Health Analytics Team</p>
+                    <p class="solution-text">An application specifically designed for healthcare providers and patients with respiratory conditions, providing detailed air quality forecasts with health recommendations and medication guidance based on predicted pollution levels from TEMPO and other data sources.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge 5 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-tractor"></i>
+                    <h2>NASA Farm Navigators</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>The agriculture community faces the challenge of integrating technology and data to enhance sustainable farming practices. Simulating key farming activities using real-world NASA satellite imagery and climate data can enable better understanding of the impacts of these variables on crop production.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Create an engaging educational game that simulates farming scenarios using NASA data.</p>
+                    <p><strong>Details:</strong> The game must utilize NASA's open data sets to simulate key farming activities and enable players to learn about sustainable agricultural methods.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="NASA Farm Navigators">
+                        <div class="form-group">
+                            <label for="name5">Your Name:</label>
+                            <input type="text" id="name5" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email5">Your Email:</label>
+                            <input type="email" id="email5" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution5">Your Solution:</label>
+                            <textarea id="solution5" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Climate-Smart Farming Simulator</h4>
+                    <p class="solution-author">By: Educational Games Studio</p>
+                    <p class="solution-text">An interactive game where players manage a virtual farm using real NASA climate and soil moisture data. Players make decisions about planting, irrigation, and harvesting while learning how satellite data can help optimize yields and reduce environmental impact.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>NASA Crop Explorer</h4>
+                    <p class="solution-author">By: AgTech Learning Initiative</p>
+                    <p class="solution-text">A game that challenges players to solve real-world farming problems using NASA Earth observation data. Players analyze satellite imagery to detect crop stress, predict yields, and implement sustainable practices while competing with friends to achieve the most productive and environmentally friendly farm.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Future Farmers VR</h4>
+                    <p class="solution-author">By: Immersive Learning Labs</p>
+                    <p class="solution-text">A virtual reality experience that places players in different global farming scenarios where they must use NASA data on precipitation, temperature, and vegetation health to make decisions about crop selection, water management, and sustainable practices in various climate conditions.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenge 6 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-fish"></i>
+                    <h2>Sharks from Space</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>Earth's ocean is one of the most powerful habitats in our universe, supporting a range of life that sustains ecosystems and habitability across the globe. While it is common to measure photosynthetic activity in the ocean from space, tracking top predators is far more challenging.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Create a mathematical framework for identifying sharks and predicting their foraging habitats using NASA satellite data.</p>
+                    <p><strong>Details:</strong> The mathematical framework must utilize NASA satellite data to track sharks and predict their foraging habitats.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Sharks from Space">
+                        <div class="form-group">
+                            <label for="name6">Your Name:</label>
+                            <input type="text" id="name6" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email6">Your Email:</label>
+                            <input type="email" id="email6" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution6">Your Solution:</label>
+                            <textarea id="solution6" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>SharkSpotter AI Framework</h4>
+                    <p class="solution-author">By: Marine Ecology AI Research</p>
+                    <p class="solution-text">A machine learning algorithm that combines NASA's ocean color data, sea surface temperature, and chlorophyll concentration with known shark tagging data to identify ocean conditions favorable to different shark species and predict their movement patterns and foraging areas.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Predator-Prey Relationship Model</h4>
+                    <p class="solution-author">By: Ocean Food Web Analytics</p>
+                    <p class="solution-text">A mathematical model that uses NASA satellite data to track the abundance of prey species (identified through ocean color and temperature data) and correlates these with historical shark sighting data to forecast shark foraging hotspots with high accuracy.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Smart Tag Design: Bio-Sensing Transmitter</h4>
+                    <p class="solution-author">By: Marine Biotechnology Group</p>
+                    <p class="solution-text">A conceptual shark tag that uses biosensors to detect chemical signatures of recent feeding activity and transmits this data along with location information. The tag would use NASA's communication satellite networks for real-time data transmission to researchers.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenge 7 -->
+        <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-satellite"></i>
+                    <h2>Lunar Dust Mitigation</h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>This challenge focused on solving one of the biggest obstacles for future lunar missions: lunar dust. Lunar dust is sharp, sticky, and harmful it can damage equipment, contaminate habitats, and even pose health risks to astronauts. The competition invited university teams to design and demonstrate innovative technologies that could prevent, remove, or mitigate lunar dust on surfaces, suits, and systems to enable safe and sustainable exploration of the Moon.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Develop practical solutions to reduce the harmful effects of lunar dust on equipment, spacesuits, optical systems, and future lunar infrastructure.</p>
+                    <p><strong>Details:</strong> The challenge required creating lightweight, low-power, and effective technologies that can function in the harsh lunar environment.</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Commercializing Low Earth Orbit (LEO)">
+                        <div class="form-group">
+                            <label for="name1">Your Name:</label>
+                            <input type="text" id="name1" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email1">Your Email:</label>
+                            <input type="email" id="email1" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution1">Your Solution:</label>
+                            <textarea id="solution1" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Leiden frost Dusting System</h4>
+                    <p class="solution-author">By: Washington State University</p>
+                    <p class="solution-text">uses cryogenic liquid droplets with the “Leiden frost effect” to lift dust particles off surfaces like spacesuits or solar panels.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Electrodynamic Dust Shield (EDS)</h4>
+                    <p class="solution-author">By: University of Colorado Boulder Team</p>
+                    <p class="solution-text">Technology that generates oscillating electric fields to repel dust from lenses and transparent surfaces.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Self-Cleaning Spacesuit Fabrics</h4>
+                    <p class="solution-author">By: Massachusetts Institute of Technology Students</p>
+                    <p class="solution-text">Smart fabrics coated with special materials to reduce dust adhesion and allow easier cleaning of spacesuits.</p>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- Challenge 8 -->
+         <section class="challenge-section">
+            <div class="challenge-info">
+                <div class="section-title">
+                    <i class="fas fa-satellite"></i>
+                    <h2>Deep Space Food Challenge </h2>
+                </div>
+                
+                <div class="challenge-description">
+                    <p>Long-duration space missions, such as a journey to Mars, require reliable food systems that cannot depend on constant resupply from Earth. The Deep Space Food Challenge was launched to inspire the development of novel, sustainable, and compact food production technologies. These systems must provide astronauts with nutritious, safe, and enjoyable meals while using minimal resources. The challenge also aims to create solutions with benefits for Earth, especially in regions where access to fresh food is limited.</p>
+                </div>
+                
+                <div class="details-box">
+                    <h4>Challenge Details</h4>
+                    <p><strong>Objective:</strong> Design innovative food systems that can provide nutritious, diverse, and palatable meals for long-duration space missions, while consuming minimal resources (water, energy, raw materials).</p>
+                    <p><strong>Details:</strong> •	Mars missions may last years, making continuous resupply from Earth impossible.
+                    •	Food systems must be sustainable, lightweight, and operable in isolated environments.
+                    •	The challenge also has applications on Earth, especially in remote regions or areas affected by climate change</p>
+                </div>
+                
+                <button class="discover-btn">
+                    <i class="fas fa-map-marker-alt"></i> Discover this challenge on Earth and how to solve it
+                </button>
+                
+                <div class="submit-section">
+                    <h3>Submit Your Solution</h3>
+                    <form class="solution-form" action="https://formspree.io/f/mblzyznr" method="POST">
+                        <input type="hidden" name="challenge" value="Commercializing Low Earth Orbit (LEO)">
+                        <div class="form-group">
+                            <label for="name1">Your Name:</label>
+                            <input type="text" id="name1" name="name" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email1">Your Email:</label>
+                            <input type="email" id="email1" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="solution1">Your Solution:</label>
+                            <textarea id="solution1" name="solution" placeholder="Describe your solution to this challenge..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="solution-info">
+                <div class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Proposed Solutions</h2>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>NUCLEUS – Closed Loop Eco-Unit System</h4>
+                    <p class="solution-author">By: Interstellar Lab (Winner)</p>
+                    <p class="solution-text">A closed-loop ecosystem producing vegetables, fungi, and insect protein inside modular, transportable units to secure diverse food in space.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Carbon to Protein Conversion System</h4>
+                    <p class="solution-author">by: Air Company</p>
+                    <p class="solution-text">A system that transforms carbon dioxide and water into proteins and nutrients through advanced chemistry, providing a sustainable food source.</p>
+                </div>
+                
+                <div class="solution-item">
+                    <h4>Microbial Food Reactor</h4>
+                    <p class="solution-author">By: Far Out Foods</p>
+                    <p class="solution-text">A compact bioreactor that uses bacteria and fungi to generate edible proteins and fats with minimal space and cost.</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>NASA Kids Challenges Platform - Submit your innovative ideas to help solve real-world problems</p>
+            <p>This is an educational demonstration inspired by actual NASA challenges</p>
+        </footer>
+    </div>
+
+    <script>
+        // Form submission handling
+        document.querySelectorAll('.solution-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const name = this.querySelector('input[name="name"]').value;
+                const email = this.querySelector('input[name="email"]').value;
+                const solution = this.querySelector('textarea[name="solution"]').value;
+                
+                if (!name || !email || !solution) {
+                    alert('Please fill in all required fields before submitting.');
+                    e.preventDefault();
+                    return;
+                }
+                
+                // إظهار رسالة تأكيد
+                alert(`Thank you, ${name}! Your solution has been submitted. NASA will review your idea.`);
+            });
+        });
+        
+        // Discover button functionality
+        document.querySelectorAll('.discover-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const challengeTitle = this.closest('.challenge-info').querySelector('h2').textContent;
+                alert(`Let's explore how to solve "${challengeTitle}" on Earth! This would open an interactive map showing real-world locations where this challenge is being addressed.`);
+            });
+        });
+    </script>
+    <style>
+        /* Highlight when navigated from map */
+        .challenge-section.highlight {
+            box-shadow: 0 12px 30px rgba(255,255,255,0.12);
+            transform: translateY(-6px);
+            transition: all 0.35s;
+        }
+    </style> 
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ✅ handle scroll to challenge from map
+      const params = new URLSearchParams(window.location.search);
+      const titleParam = params.get('title');
+      if (titleParam) {
+        const targetTitle = titleParam.trim().toLowerCase();
+        const sections = Array.from(document.querySelectorAll('.challenge-section'));
+        let matched = null;
+        for (const sec of sections) {
+          const h2 = sec.querySelector('.challenge-info h2');
+          if (h2 && h2.textContent.trim().toLowerCase() === targetTitle) {
+            matched = sec;
+            break;
+          }
+        }
+        if (!matched) {
+          for (const sec of sections) {
+            const h2 = sec.querySelector('.challenge-info h2');
+            if (h2 && h2.textContent.trim().toLowerCase().includes(targetTitle)) {
+              matched = sec;
+              break;
+            }
+          }
+        }
+        if (matched) {
+          matched.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          matched.classList.add('highlight');
+          setTimeout(() => matched.classList.remove('highlight'), 2500);
+        }
+      }
+  
+      // ✅ form validation
+      document.querySelectorAll('.solution-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+          const name = this.querySelector('input[name="name"]').value.trim();
+          const email = this.querySelector('input[name="email"]').value.trim();
+          const solution = this.querySelector('textarea[name="solution"]').value.trim();
+          if (!name || !email || !solution) {
+            e.preventDefault();
+            alert('Please fill in all required fields before submitting.');
+            return;
+          }
+          alert(`Thank you, ${name}! Your solution has been submitted.`);
+        });
+      });
+  
+      // ✅ existing discover buttons keep working
+      document.querySelectorAll('.discover-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const title = this.closest('.challenge-info').querySelector('h2').textContent.trim();
+          window.location.href = `map.html?challenge=${encodeURIComponent(title.toLowerCase().replaceAll(' ', '-'))}`;
+        });
+      });
+    });
+    </script>
+
+</body>
+</html>

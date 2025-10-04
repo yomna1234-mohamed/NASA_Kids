@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NASA Kids - Solar System Explorer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #1e293b, #334155, #0f172a);
+      min-height: 100vh;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    iframe {
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #475569;
+    }
+    .expand-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(30, 41, 59, 0.8);
+      color: white;
+      border: 1px solid #475569;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .expand-btn:hover {
+      background: rgba(14, 165, 233, 0.8);
+      transform: scale(1.05);
+    }
+    .iframe-container {
+      position: relative;
+    }
+  </style>
+</head>
+
+<body class="font-sans">
+
+  <div class="max-w-4xl mx-auto p-6">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-extrabold text-white">🌌 NASA Kids</h1>
+      <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+        Explore our solar system with NASA's interactive 3D simulator
+      </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="glass-effect rounded-2xl shadow-2xl p-6">
+      <div class="iframe-container">
+        <button class="expand-btn" onclick="openFullscreen('solarSystem')">
+          ⛶ Fullscreen
+        </button>
+        <iframe 
+          id="solarSystem"
+          src="https://eyes.nasa.gov/apps/solar-system/" 
+          class="w-full h-[600px]"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openFullscreen(id) {
+      const iframe = document.getElementById(id);
+
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) { // Firefox
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { // IE/Edge
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape" && document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+
+</body>
+</html>
